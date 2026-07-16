@@ -1,0 +1,27 @@
+# Blueprint manifest. tools/lint.py validates this file against the manifest
+# rules in standard/. Claude Desktop does not read it.
+name: "{{NAME}}"
+slug: _blank # TODO: after copying, set this to the blueprint folder name, e.g. salon
+version: "0.1.0"
+business_type: "{{BUSINESS_TYPE}}"
+summary: "A ready-to-open business folder that helps you run {{NAME}} day to day — Claude drafts, you approve."
+language: en
+skills:
+  - plan-the-week
+  - draft-a-promo
+  - close-the-day
+schedules:
+  - morning-brief
+  - end-of-day
+workflows:
+  - weekly-review
+templates:
+  - weekly-report
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand

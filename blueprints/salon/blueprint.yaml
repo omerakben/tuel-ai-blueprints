@@ -1,0 +1,46 @@
+name: Salon
+slug: salon
+version: 0.1.0
+business_type: barber & beauty salon
+summary: A ready-to-run assistant for your salon. It fills chairs, reminds clients to rebook, drafts your posts, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - book-appointment
+  - fill-the-chair
+  - rebook-reminder
+  - reorder-stock
+  - daily-close
+  - review-reply
+schedules:
+  - morning-brief
+  - end-of-day
+  - slow-day-promo
+workflows:
+  - weekly-marketing
+  - monthly-books
+templates:
+  - promo-post
+  - sms-reminder
+  - review-reply
+  - daily-close
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for client emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The daily close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and services current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback
