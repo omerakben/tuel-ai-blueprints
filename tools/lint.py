@@ -37,6 +37,7 @@ REQUIRED_FILES = (
     "CLAUDE.md",
     "onboarding/interview.md",
     "onboarding/checklist.md",
+    "connectors.md",
 )
 
 MANIFEST_SECTIONS = {
@@ -51,8 +52,11 @@ MANIFEST_SECTIONS = {
 MIN_SKILLS = 3
 MIN_SCHEDULES = 2
 
-HARD_RULES_RE = re.compile(r"^#{1,6}\s*hard rules", re.IGNORECASE | re.MULTILINE)
-SOURCE_OF_TRUTH_RE = re.compile(r"source of truth", re.IGNORECASE)
+HARD_RULES_RE = re.compile(r"^[ ]{0,3}#{1,6}[ \t]+hard rules[ \t]*#*[ \t]*$", re.IGNORECASE | re.MULTILINE)
+BUSINESS_SOURCE_RE = re.compile(
+    r"^[ ]{0,3}(?:(?:[-*]|\d+\.)\s+)?(?:\*\*)?`?business/`?(?:\*\*)?\s+(?:files\s+(?:are|is)|is)\s+the\s+source\s+of\s+truth\b",
+    re.IGNORECASE | re.MULTILINE,
+)
 
 OWNER_FACING_GLOBS = ("START-HERE.md", "onboarding/*.md", "templates/*.md", "business/*.md", "connectors.md")
 JARGON_RE = re.compile(r"\b(connectors?|MCP|schemas?|APIs?|endpoints?)\b", re.IGNORECASE)
@@ -62,6 +66,20 @@ EMAIL_RE = re.compile(r"\b[\w.+-]+@[\w-]+\.\w{2,}\b")
 PLACEHOLDER_RE = re.compile(r"\{\{[A-Z_]+\}\}")
 
 TEMPLATE_SLUG = "_blank"
+
+
+class StrictYamlLoader(yaml.SafeLoader):
+    """SafeLoader that rejects duplicate mapping keys instead of silently
+    keeping the last one — a manifest with two `slug:` lines is ambiguous."""
+
+    def construct_mapping(self, node, deep: bool = False):
+        seen: list[object] = []
+        for key_node, _value_node in node.value:
+            key = self.construct_object(key_node, deep=deep)
+            if key in seen:
+                raise yaml.YAMLError(f"duplicate key {key!r} in mapping")
+            seen.append(key)
+        return super().construct_mapping(node, deep)
 
 
 # --------------------------------------------------------------------------
@@ -102,6 +120,14 @@ def check_schema_supported(schema: dict) -> None:
             prefix = "#/$defs/"
             if not (isinstance(ref, str) and ref.startswith(prefix) and ref[len(prefix):] in defs):
                 raise UnsupportedSchemaKeyword(f"unsupported $ref target: {ref}")
+            siblings = set(node) - {"$ref"} - _IGNORED
+            if siblings:
+                raise UnsupportedSchemaKeyword(
+                    f"validation keywords next to $ref are not evaluated: {sorted(siblings)}"
+                )
+        declared = node.get("type")
+        if declared is not None and declared not in _TYPE_MAP:
+            raise UnsupportedSchemaKeyword(f"unsupported type {declared!r}")
         ap = node.get("additionalProperties")
         if ap is not None and not isinstance(ap, bool):
             raise UnsupportedSchemaKeyword("additionalProperties supports only boolean values")
@@ -214,7 +240,9 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
     manifest_path = bp_dir / "blueprint.yaml"
     if manifest_path.is_file():
         try:
-            loaded = yaml.safe_load(_read(manifest_path))
+            # StrictYamlLoader subclasses SafeLoader: safe types only, plus
+            # duplicate-key rejection that plain safe_load does not do.
+            loaded = yaml.load(_read(manifest_path), Loader=StrictYamlLoader)
         except yaml.YAMLError as exc:
             err("manifest", f"blueprint.yaml does not parse: {exc}")
         else:
@@ -240,8 +268,8 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
         text = _read(claude_path)
         if not HARD_RULES_RE.search(text):
             err("operating-agent", "CLAUDE.md has no 'Hard rules' heading")
-        if "business/" not in text or not SOURCE_OF_TRUTH_RE.search(text):
-            err("operating-agent", "CLAUDE.md must name business/ as the source of truth")
+        if not BUSINESS_SOURCE_RE.search(text):
+            err("operating-agent", "CLAUDE.md must state that business/ is the source of truth")
 
     # 5. Manifest <-> disk, both directions.
     if manifest is not None:
@@ -311,9 +339,9 @@ def default_targets() -> list[Path]:
     blueprints = REPO_ROOT / "blueprints"
     if blueprints.is_dir():
         targets.extend(sorted(p for p in blueprints.iterdir() if p.is_dir()))
-    blank = REPO_ROOT / "templates" / TEMPLATE_SLUG
-    if blank.is_dir() and any(blank.iterdir()):
-        targets.append(blank)
+    # templates/_blank is load-bearing (the scaffolder copies it), so its
+    # absence is a failure, never a silent skip.
+    targets.append(REPO_ROOT / "templates" / TEMPLATE_SLUG)
     return targets
 
 

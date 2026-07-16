@@ -4,7 +4,7 @@
   "title": "TUEL Blueprint Manifest",
   "description": "Schema for blueprint.yaml, the manifest at the root of every TUEL blueprint folder. tools/lint.py validates manifests against this file and additionally enforces file-level rules the schema cannot express (files exist, slug matches directory, CLAUDE.md hard rules). The manifest is a repository convention: Claude Desktop does not read it.",
   "type": "object",
-  "required": ["name", "slug", "version", "business_type", "summary", "skills", "schedules"],
+  "required": ["name", "slug", "version", "business_type", "summary", "skills", "schedules", "memory_files"],
   "additionalProperties": false,
   "properties": {
     "name": {
@@ -66,9 +66,10 @@
     },
     "memory_files": {
       "type": "array",
+      "minItems": 1,
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/slugRef" },
-      "description": "Business-memory stubs. Each entry must have a matching business/<slug>.md. Owner-owned: ships as empty friendly stubs, never with fabricated data."
+      "description": "Business-memory stubs. Required: a blueprint without business memory has no source of truth. Each entry must have a matching business/<slug>.md. Owner-owned: ships as empty friendly stubs, never with fabricated data."
     },
     "connectors": {
       "type": "array",

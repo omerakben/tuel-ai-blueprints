@@ -56,7 +56,7 @@ Use these exact terms everywhere.
 └── connectors.md            # Which connections help, each with a plain-English why. All optional.
 ```
 
-`blueprint.yaml` is a repository convention. Claude Desktop does not read it. It exists so `tools/lint.py`, the catalog, and packaging can verify the folder. Required and optional fields are defined in `standard/blueprint.schema.json`.
+`blueprint.yaml` is a repository convention. Claude Desktop does not read it. It exists so `tools/lint.py`, the catalog, and packaging can verify the folder. Required and optional fields are defined in `standard/blueprint.schema.json`. `workflows/` and `templates/` are optional (the flagship ships both); business memory, skills, schedules, the onboarding pair, and `connectors.md` are not.
 
 ## 4. The Onboarding Agent
 
@@ -157,7 +157,7 @@ There is no schedule-file import. Each `schedules/<slug>.md` is a recipe: what t
 
 `tools/lint.py` (stdlib + PyYAML) checks every blueprint:
 
-- `START-HERE.md`, `blueprint.yaml`, `CLAUDE.md`, `onboarding/interview.md`, `onboarding/checklist.md` exist and are non-empty.
+- `START-HERE.md`, `blueprint.yaml`, `CLAUDE.md`, `onboarding/interview.md`, `onboarding/checklist.md`, `connectors.md` exist and are non-empty.
 - `blueprint.yaml` validates against `standard/blueprint.schema.json`; `slug` matches the directory name.
 - `CLAUDE.md` has a Hard rules section and names `business/` as the source of truth.
 - At least 3 skills and 2 schedules exist; every manifest entry has a matching file and every file a manifest entry.
