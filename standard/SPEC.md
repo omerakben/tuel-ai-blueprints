@@ -164,4 +164,4 @@ There is no schedule-file import. Each `schedules/<slug>.md` is a recipe: what t
 - `assets/README.md` and `reports/` exist.
 - Warnings: possible data in `business/` stubs; platform jargon in owner-facing files.
 
-Run `python tools/lint.py` locally; CI runs it on every push and pull request.
+Run `python tools/lint.py` locally; CI runs it on every push to main and every pull request.

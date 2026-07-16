@@ -55,7 +55,7 @@ HARD_RULES_RE = re.compile(r"^#{1,6}\s*hard rules", re.IGNORECASE | re.MULTILINE
 SOURCE_OF_TRUTH_RE = re.compile(r"source of truth", re.IGNORECASE)
 
 OWNER_FACING_GLOBS = ("START-HERE.md", "onboarding/*.md", "templates/*.md", "business/*.md", "connectors.md")
-JARGON_RE = re.compile(r"\b(connectors?|MCP|schema|API|endpoint)\b", re.IGNORECASE)
+JARGON_RE = re.compile(r"\b(connectors?|MCP|schemas?|APIs?|endpoints?)\b", re.IGNORECASE)
 CURRENCY_RE = re.compile(r"\$\d")
 PHONE_RE = re.compile(r"\(?\b\d{3}\)?[-.\s]\d{3}[-.\s]?\d{4}\b")
 EMAIL_RE = re.compile(r"\b[\w.+-]+@[\w-]+\.\w{2,}\b")
@@ -86,6 +86,33 @@ def _check_keywords(schema: dict) -> None:
                 f"standard/blueprint.schema.json uses '{keyword}', which tools/lint.py "
                 f"does not implement. Update the validator before using this keyword."
             )
+
+
+def check_schema_supported(schema: dict) -> None:
+    """Walk the whole schema document once so unsupported keywords fail at startup,
+    not only when a manifest happens to exercise the branch they live in."""
+    defs = schema.get("$defs", {})
+
+    def walk(node: object) -> None:
+        if not isinstance(node, dict):
+            return
+        _check_keywords(node)
+        if "$ref" in node:
+            ref = node["$ref"]
+            prefix = "#/$defs/"
+            if not (isinstance(ref, str) and ref.startswith(prefix) and ref[len(prefix):] in defs):
+                raise UnsupportedSchemaKeyword(f"unsupported $ref target: {ref}")
+        ap = node.get("additionalProperties")
+        if ap is not None and not isinstance(ap, bool):
+            raise UnsupportedSchemaKeyword("additionalProperties supports only boolean values")
+        for sub in node.get("properties", {}).values():
+            walk(sub)
+        if "items" in node:
+            walk(node["items"])
+
+    walk(schema)
+    for sub in defs.values():
+        walk(sub)
 
 
 def validate_instance(value: object, schema: dict, defs: dict, path: str, errors: list[str]) -> None:
@@ -235,9 +262,8 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
                     on_disk = {p.name for p in section_dir.iterdir() if p.is_dir()}
                 else:
                     on_disk = {p.stem for p in section_dir.glob("*.md")}
-                    if key == "memory_files":
-                        pass  # business/*.md all count
-            for slug in sorted(on_disk - set(listed)):
+            listed_slugs = {s for s in listed if isinstance(s, str)}
+            for slug in sorted(on_disk - listed_slugs):
                 err(key, f"{dirname}/{slug} exists on disk but is not in the manifest")
 
     # 6. Minimum counts on disk.
@@ -292,7 +318,7 @@ def default_targets() -> list[Path]:
 
 
 def is_template(path: Path) -> bool:
-    return "templates" in [p.name for p in path.parents] or path.parent.name == "templates"
+    return path.resolve().parent == (REPO_ROOT / "templates").resolve()
 
 
 def run(targets: list[Path], schema: dict, strict: bool, as_json: bool) -> int:
@@ -458,6 +484,11 @@ def main() -> int:
     args = parser.parse_args()
 
     schema = json.loads(SCHEMA_PATH.read_text(encoding="utf-8"))
+    try:
+        check_schema_supported(schema)
+    except UnsupportedSchemaKeyword as exc:
+        print(f"schema error: {exc}", file=sys.stderr)
+        return 2
 
     if args.self_test:
         return self_test(schema)

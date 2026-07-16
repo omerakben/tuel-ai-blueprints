@@ -4,8 +4,9 @@
 Usage:
     python tools/create_blueprint.py <slug> --name "Salon" --business-type "barber & beauty salon"
 
-Copies templates/_blank to blueprints/<slug>, fills in the {{SLUG}},
-{{NAME}}, and {{BUSINESS_TYPE}} placeholders, and renames any path that
+Copies templates/_blank to blueprints/<slug>, fills in the {{NAME}} and
+{{BUSINESS_TYPE}} placeholders (plus {{SLUG}} where present), sets the
+manifest slug so the fresh copy lints clean, and renames any path that
 contains {{SLUG}}. Standard library only.
 """
 
@@ -33,6 +34,10 @@ def main() -> int:
     if not SLUG_RE.match(args.slug):
         print(f"slug {args.slug!r} must match {SLUG_RE.pattern}", file=sys.stderr)
         return 2
+    for label, value in (("--name", args.name), ("--business-type", args.business_type)):
+        if '"' in value or "\\" in value:
+            print(f"{label} must not contain double quotes or backslashes", file=sys.stderr)
+            return 2
     if not BLANK.is_dir() or not any(BLANK.iterdir()):
         print("templates/_blank is missing or empty — it is authored separately.", file=sys.stderr)
         return 2
@@ -56,6 +61,12 @@ def main() -> int:
             path.write_text(text, encoding="utf-8")
         if "{{SLUG}}" in path.name:
             path.rename(path.with_name(path.name.replace("{{SLUG}}", args.slug)))
+
+    manifest = dest / "blueprint.yaml"
+    if manifest.is_file():
+        text = manifest.read_text(encoding="utf-8")
+        text = re.sub(r"(?m)^slug:.*$", f"slug: {args.slug}", text, count=1)
+        manifest.write_text(text, encoding="utf-8")
 
     print(f"Created blueprints/{args.slug} from templates/_blank.")
     print("Next steps:")
