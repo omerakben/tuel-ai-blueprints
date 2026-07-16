@@ -1,0 +1,105 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://tuel.ai/standard/blueprint.schema.json",
+  "title": "TUEL Blueprint Manifest",
+  "description": "Schema for blueprint.yaml, the manifest at the root of every TUEL blueprint folder. tools/lint.py validates manifests against this file and additionally enforces file-level rules the schema cannot express (files exist, slug matches directory, CLAUDE.md hard rules). The manifest is a repository convention: Claude Desktop does not read it.",
+  "type": "object",
+  "required": ["name", "slug", "version", "business_type", "summary", "skills", "schedules"],
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Human-readable blueprint name, e.g. 'Salon'."
+    },
+    "slug": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$",
+      "description": "Lowercase identifier. Must equal the blueprint directory name. The scaffold under templates/_blank uses the placeholder slug '_blank', accepted only there."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$",
+      "description": "Semantic version. Bump minor for workflow/skill changes, major for changes to approval rules or memory layout. Never silently change an installed owner's approval policy in an upgrade."
+    },
+    "business_type": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Plain description of the business this blueprint operates, e.g. 'barber & beauty salon'."
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "One sentence an owner would understand, shown in the catalog."
+    },
+    "language": {
+      "type": "string",
+      "default": "en",
+      "description": "Primary language of owner-facing text."
+    },
+    "skills": {
+      "type": "array",
+      "minItems": 3,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slugRef" },
+      "description": "Each entry must have a matching skills/<slug>/SKILL.md."
+    },
+    "schedules": {
+      "type": "array",
+      "minItems": 2,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slugRef" },
+      "description": "Each entry must have a matching schedules/<slug>.md. Morning brief and end-of-day close are the required minimum."
+    },
+    "workflows": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slugRef" },
+      "description": "Each entry must have a matching workflows/<slug>.md."
+    },
+    "templates": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slugRef" },
+      "description": "Each entry must have a matching templates/<slug>.md."
+    },
+    "memory_files": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slugRef" },
+      "description": "Business-memory stubs. Each entry must have a matching business/<slug>.md. Owner-owned: ships as empty friendly stubs, never with fabricated data."
+    },
+    "connectors": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["name", "why", "status"],
+        "additionalProperties": false,
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Tool the owner may connect, e.g. 'Gmail', 'Square'."
+          },
+          "why": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Plain-English reason an owner would connect it. No jargon."
+          },
+          "status": {
+            "enum": ["confirmed-official-example", "candidate-remote-mcp", "local-or-export-fallback"],
+            "description": "Recommendation label. A recommendation never claims installation, authorization, or compliance."
+          }
+        }
+      },
+      "description": "Optional recommendations, mirrored in owner-facing connectors.md. All connections are optional; the blueprint must work with none."
+    }
+  },
+  "$defs": {
+    "slugRef": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*$"
+    }
+  }
+}
