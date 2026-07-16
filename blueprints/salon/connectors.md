@@ -14,7 +14,7 @@ When the tool that runs your till is connected, the daily close can add itself u
 
 ## Google Business Profile
 
-If your business listing can be connected, Claude helps you keep hours and services current and prepares your review replies. Posting a reply is still your move: you say yes to that exact reply, right then, or paste it in yourself. A yes to a draft earlier is not a yes to posting it.
+If your business listing can be connected, Claude helps you keep hours and services current and prepares your review replies, ready for you to paste. Posting is always yours.
 
 ## Instagram and Facebook
 
