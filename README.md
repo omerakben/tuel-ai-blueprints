@@ -17,13 +17,24 @@ Everything is draft-first: nothing is sent, posted, paid, or promised without yo
 | Blueprint | For | Status |
 |---|---|---|
 | [`salon`](blueprints/salon/) | Barber and beauty salons | ✅ available |
-| `cafe` | Cafés and coffee shops | 🛠️ planned |
-| `food-truck` | Food trucks and market stalls | 🛠️ planned |
-| `boutique` | Independent retail shops | 🛠️ planned |
-| `gym` | Gyms and fitness studios | 🛠️ planned |
-| `cleaning-service` | Home and office cleaning crews | 🛠️ planned |
-| `plumber` | Plumbing and skilled trades | 🛠️ planned |
-| `photographer` | Photographers and solo creatives | 🛠️ planned |
+| [`cafe`](blueprints/cafe/) | Neighborhood cafés | ✅ available |
+| [`bakery`](blueprints/bakery/) | Bakeries and pastry shops | ✅ available |
+| [`restaurant`](blueprints/restaurant/) | Small family restaurants | ✅ available |
+| [`bar`](blueprints/bar/) | Neighborhood bars | ✅ available |
+| [`food-truck`](blueprints/food-truck/) | Food trucks and market stalls | ✅ available |
+| [`boutique`](blueprints/boutique/) | Independent retail shops | ✅ available |
+| [`florist`](blueprints/florist/) | Flower shops | ✅ available |
+| [`gym`](blueprints/gym/) | Small gyms and fitness studios | ✅ available |
+| [`pet-groomer`](blueprints/pet-groomer/) | Pet grooming businesses | ✅ available |
+| [`tattoo-studio`](blueprints/tattoo-studio/) | Tattoo studios | ✅ available |
+| [`photographer`](blueprints/photographer/) | Photographers and solo creatives | ✅ available |
+| [`event-planner`](blueprints/event-planner/) | Event planners | ✅ available |
+| [`tutoring-studio`](blueprints/tutoring-studio/) | Tutoring studios | ✅ available |
+| [`cleaning-service`](blueprints/cleaning-service/) | Home and office cleaning crews | ✅ available |
+| [`lawn-care`](blueprints/lawn-care/) | Lawn care and landscaping crews | ✅ available |
+| [`plumber`](blueprints/plumber/) | Plumbing businesses | ✅ available |
+| [`handyman`](blueprints/handyman/) | Handyman businesses | ✅ available |
+| [`auto-repair`](blueprints/auto-repair/) | Independent auto repair shops | ✅ available |
 | `dental-front-desk` | Dental practice front desks (admin only, no patient health records) | 🛠️ planned |
 
 ## Get one folder

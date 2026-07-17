@@ -1,0 +1,45 @@
+name: Tutoring studio
+slug: tutoring-studio
+version: 0.1.0
+business_type: tutoring studio
+summary: A ready-to-run assistant for your tutoring studio. It answers parent inquiries, drafts session options and recap notes, and nudges unpaid invoices, always showing you drafts first.
+language: en
+skills:
+  - draft-an-inquiry-reply
+  - draft-session-options
+  - draft-a-factual-session-recap
+  - draft-an-invoice-reminder
+  - draft-a-slot-fill-note
+schedules:
+  - morning-brief
+  - end-of-day
+  - slot-fill
+workflows:
+  - weekly-schedule
+  - monthly-books
+templates:
+  - inquiry-reply
+  - recap-note
+  - reminder-text
+  - invoice-reminder
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for parent emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The end-of-day close can add itself up from the day's payments instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and subjects current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

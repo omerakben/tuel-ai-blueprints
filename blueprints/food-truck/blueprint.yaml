@@ -1,0 +1,45 @@
+name: Food truck
+slug: food-truck
+version: 0.1.0
+business_type: food truck
+summary: A ready-to-run assistant for your food truck. It drafts today's location post, preps tomorrow's list, drafts event replies, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - draft-todays-location-post
+  - draft-an-event-inquiry-reply
+  - build-a-prep-list
+  - close-the-day
+  - prepare-a-restock-list
+schedules:
+  - morning-brief
+  - end-of-day
+  - tomorrows-location-post
+workflows:
+  - weekly-route
+  - monthly-books
+templates:
+  - location-post
+  - prep-list
+  - daily-close
+  - event-inquiry-reply
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for event and booking emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The daily close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep your listing's hours and menu current, with updates prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your location posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

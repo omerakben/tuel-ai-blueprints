@@ -1,0 +1,46 @@
+name: Auto repair
+slug: auto-repair
+version: 0.1.0
+business_type: independent auto repair shop
+summary: A ready-to-run assistant for your repair shop. It keeps customers posted, drafts estimates and invoice reminders, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - draft-a-customer-status-update
+  - draft-a-repair-approval-request
+  - draft-a-repair-estimate
+  - draft-an-invoice-reminder
+  - draft-a-review-reply
+schedules:
+  - morning-brief
+  - end-of-day
+  - parts-status-review
+workflows:
+  - weekly-bays
+  - monthly-books
+templates:
+  - estimate
+  - status-update
+  - approval-request
+  - invoice-reminder
+  - review-reply
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for customer emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The end-of-day close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and services current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

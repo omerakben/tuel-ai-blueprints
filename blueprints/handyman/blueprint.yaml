@@ -1,0 +1,45 @@
+name: Handyman
+slug: handyman
+version: 0.1.0
+business_type: handyman business
+summary: A ready-to-run assistant for your handyman business. It drafts estimates from your rates, plans your week, builds the shopping list, and nudges quiet estimates, always showing you drafts first.
+language: en
+skills:
+  - draft-a-job-estimate
+  - plan-the-week
+  - draft-an-estimate-follow-up
+  - draft-an-invoice-reminder
+  - prepare-a-materials-list
+schedules:
+  - morning-brief
+  - end-of-day
+  - estimate-chase
+workflows:
+  - weekly-jobs
+  - monthly-books
+templates:
+  - estimate
+  - job-note
+  - follow-up-note
+  - invoice-reminder
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Estimate and reminder drafts land in your email ready to send — you still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The month-end tidy-up can read the month's payments instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep your hours and service area current, with review replies ready for your yes — posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts the post about a finished job, and posting stays yours.
+    status: local-or-export-fallback

@@ -1,0 +1,45 @@
+name: Event planner
+slug: event-planner
+version: 0.1.0
+business_type: event planning business
+summary: A ready-to-run assistant for your event planning business. It drafts inquiry replies, proposals, timelines, vendor briefs, and deposit reminders — you approve everything before it goes out.
+language: en
+skills:
+  - draft-an-inquiry-reply
+  - draft-an-event-proposal
+  - prepare-a-planning-timeline
+  - prepare-a-vendor-brief
+  - draft-a-deposit-reminder
+schedules:
+  - morning-brief
+  - end-of-day
+  - lead-sweep
+workflows:
+  - weekly-pipeline
+  - monthly-books
+templates:
+  - inquiry-reply
+  - event-proposal
+  - vendor-brief
+  - deposit-reminder
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Inquiry and client reply drafts land ready to send — you still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The month-end tidy-up can check what came in against your own list — you still handle every charge yourself.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keeps hours and services current, with review replies prepared for your yes — posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

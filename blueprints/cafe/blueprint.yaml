@@ -1,0 +1,45 @@
+name: Cafe
+slug: cafe
+version: 0.1.0
+business_type: neighborhood cafe
+summary: A ready-to-run assistant for your cafe. It drafts your daily special post, builds restock lists, closes out the till, and preps review replies, always showing you drafts first.
+language: en
+skills:
+  - draft-the-special-post
+  - prepare-a-restock-list
+  - close-the-day
+  - draft-a-review-reply
+  - plan-shifts
+schedules:
+  - morning-brief
+  - end-of-day
+  - quiet-morning-promo
+workflows:
+  - weekly-specials
+  - monthly-books
+templates:
+  - special-post
+  - shift-note
+  - review-reply
+  - daily-close
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Supplier order drafts and reply drafts land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The day close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and the menu current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts the special post and caption; you paste and post when you're happy.
+    status: local-or-export-fallback

@@ -1,0 +1,9 @@
+# Hi, I'm your cleaning business's assistant
+
+Open this folder in Claude Desktop and just say hello.
+
+I'll ask a few quick questions about your business — one at a time, no tech talk — and in about twenty minutes you'll have your first win: your rates saved and your first job estimate drafted, ready to send. The final price is always yours to set after you've seen the place.
+
+From then on I draft your estimates, confirmation texts, payment reminders, and "want us back regularly?" notes, and I propose your week's routes for you to approve.
+
+One promise before we start: I always show you a draft first. Nothing gets sent, posted, or paid without your okay.

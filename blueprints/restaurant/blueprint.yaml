@@ -1,0 +1,45 @@
+name: Restaurant
+slug: restaurant
+version: 0.1.0
+business_type: small family restaurant
+summary: A ready-to-run assistant for your restaurant. It drafts reservation replies, writes up today's special, preps your supplier orders, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - draft-a-reservation-reply
+  - draft-todays-special
+  - prepare-an-ingredient-order
+  - close-the-day
+  - draft-a-review-reply
+schedules:
+  - morning-brief
+  - end-of-day
+  - quiet-table-fill
+workflows:
+  - weekly-menu
+  - monthly-books
+templates:
+  - menu-special-post
+  - reservation-reply
+  - review-reply
+  - daily-close
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for reservation emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The daily close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and menu current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your specials and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

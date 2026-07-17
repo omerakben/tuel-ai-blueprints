@@ -1,0 +1,45 @@
+name: Bakery
+slug: bakery
+version: 0.1.0
+business_type: bakery & pastry shop
+summary: A ready-to-run assistant for your bakery. It drafts custom order replies, proposes the bake list, preps supplier orders, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - draft-a-custom-order-reply
+  - draft-the-bake-post
+  - prepare-the-bake-list
+  - prepare-an-ingredient-order
+  - close-the-day
+schedules:
+  - morning-brief
+  - end-of-day
+  - weekend-preorder-push
+workflows:
+  - weekly-production
+  - monthly-books
+templates:
+  - bake-post
+  - custom-order-form
+  - daily-close
+  - review-reply
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for custom order emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The daily close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and the counter lineup current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your bake posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

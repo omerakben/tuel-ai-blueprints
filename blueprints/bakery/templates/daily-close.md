@@ -1,0 +1,42 @@
+# Daily close
+
+The end-of-day page. Claude fills in what it knows, the owner fills in the drawer, and together they check that it lines up. Once the owner has looked it over, it is saved to reports/.
+
+## The skeleton
+
+**Date:** [date]
+
+**Sold out:** [which bakes ran out, and roughly when]
+
+**Came home:** [what was left in the case at close]
+
+**Takings**
+
+- Cash: [amount]
+- Card: [amount]
+- Deposits and preorders taken today: [amount, if any]
+
+**Drawer count:** [amount]
+
+**Lines up?** [yes / question — if it is a question, say plainly what is off, like "drawer is short of what the till says"]
+
+**Custom orders taken today:** [name and pickup date for each, so tomorrow's bake list catches them]
+
+**Notes:** [anything worth remembering about today]
+
+**Flags for the owner:** [things that need their eyes — flour running low, a customer to call back. "Nothing today" is a fine answer.]
+
+**Tomorrow**
+
+- [line one]
+- [line two]
+- [line three]
+
+## How to fill it in
+
+- Every number comes from the till, the card reader, or the owner's count. Never guess a number, and never fill one in to make the page look done.
+- If the drawer does not line up, write the question. Do not smooth it over or offer a theory as if it were fact.
+- Sold-out and came-home lines feed tomorrow's bake list — write what actually happened, not what should have.
+- Keep flags honest and small. The owner should be able to read this page in one minute at the end of a long day.
+- The three tomorrow lines are the first things worth doing in the morning, in the owner's words where possible.
+- Show the owner the finished page before saving it to reports/. This page is a record — it should only ever say things that are true.

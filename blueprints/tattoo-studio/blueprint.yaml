@@ -1,0 +1,45 @@
+name: Tattoo studio
+slug: tattoo-studio
+version: 0.1.0
+business_type: tattoo studio
+summary: A ready-to-run assistant for your tattoo studio. It drafts inquiry replies, preps consult briefs, and keeps waitlist offers ready when a slot opens, always showing you drafts first.
+language: en
+skills:
+  - draft-an-inquiry-reply
+  - prepare-a-consult-brief
+  - prepare-waitlist-outreach
+  - draft-a-cancellation-fill-message
+  - draft-a-recent-work-post
+schedules:
+  - morning-brief
+  - end-of-day
+  - cancellation-fill
+workflows:
+  - weekly-bookings
+  - monthly-books
+templates:
+  - inquiry-reply
+  - consult-brief
+  - work-post
+  - cancellation-fill-text
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Inquiry reply drafts land in your email ready to send — you still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The end-of-day wrap-up can add itself up from the day's takings instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keeps your hours current and preps review replies for your yes — posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts captions for pieces your clients agreed to share, and you post when you're happy.
+    status: local-or-export-fallback

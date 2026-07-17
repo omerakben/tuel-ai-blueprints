@@ -1,0 +1,45 @@
+name: Boutique
+slug: boutique
+version: 0.1.0
+business_type: independent retail shop
+summary: A ready-to-run assistant for your shop. It drafts new-arrival posts, preps restock lists for your vendors, replies to reviews, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - draft-a-new-arrivals-post
+  - draft-a-hold-request-reply
+  - prepare-a-restock-list
+  - close-the-day
+  - draft-a-review-reply
+schedules:
+  - morning-brief
+  - end-of-day
+  - slow-day-promo
+workflows:
+  - weekly-merchandising
+  - monthly-books
+templates:
+  - arrival-post
+  - hold-reply
+  - review-reply
+  - daily-close
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for customer emails land ready to send — you still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The daily close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours current and review replies prepared for your yes — posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts the caption and you post it when you're happy.
+    status: local-or-export-fallback

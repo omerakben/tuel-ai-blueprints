@@ -1,0 +1,45 @@
+name: Florist
+slug: florist
+version: 0.1.0
+business_type: flower shop
+summary: A ready-to-run assistant for your flower shop. It drafts order replies, turns what's fresh into posts, lines up your stem orders, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - draft-a-custom-order-reply
+  - draft-todays-blooms-post
+  - draft-an-event-proposal
+  - prepare-a-stem-order
+  - close-the-day
+schedules:
+  - morning-brief
+  - end-of-day
+  - upcoming-occasion-preorders
+workflows:
+  - weekly-orders
+  - monthly-books
+templates:
+  - order-form
+  - bloom-post
+  - event-proposal
+  - daily-close
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for order emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The daily close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and holiday closures current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

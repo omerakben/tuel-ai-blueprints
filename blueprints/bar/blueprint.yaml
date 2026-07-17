@@ -1,0 +1,45 @@
+name: Bar
+slug: bar
+version: 0.1.0
+business_type: neighborhood bar
+summary: A ready-to-run assistant for your bar. It drafts tonight's post, builds your restock list, closes out the day, and preps replies to reviews and party inquiries — you see every draft first.
+language: en
+skills:
+  - draft-tonights-promo
+  - prepare-a-bar-restock-list
+  - close-the-day
+  - draft-a-review-reply
+  - draft-a-private-event-reply
+schedules:
+  - morning-brief
+  - end-of-day
+  - slow-night-promo
+workflows:
+  - weekly-events
+  - monthly-books
+templates:
+  - event-post
+  - private-event-reply
+  - review-reply
+  - daily-close
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Party and private-event inquiries get reply drafts ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The daily close can add itself up from the day's sales instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts tonight's post and caption; you paste and post when you're happy.
+    status: local-or-export-fallback

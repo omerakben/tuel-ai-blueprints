@@ -1,0 +1,46 @@
+name: Gym
+slug: gym
+version: 0.1.0
+business_type: small gym & fitness studio
+summary: A ready-to-run assistant for your gym. It fills classes, welcomes new members, drafts renewal and win-back notes, and closes out the day, always showing you drafts first.
+language: en
+skills:
+  - draft-a-class-fill-post
+  - draft-a-renewal-note
+  - draft-a-lapsed-member-win-back
+  - draft-a-welcome-note
+  - draft-a-review-reply
+schedules:
+  - morning-brief
+  - end-of-day
+  - class-fill-push
+workflows:
+  - weekly-schedule
+  - monthly-books
+templates:
+  - class-post
+  - renewal-note
+  - welcome-note
+  - win-back-note
+  - review-reply
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for member emails land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The end-of-day close can add itself up from the day's sales and sign-ups instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and class info current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your class posts and captions; you paste and post when you're happy.
+    status: local-or-export-fallback

@@ -1,0 +1,45 @@
+name: Photographer
+slug: photographer
+version: 0.1.0
+business_type: photography business
+summary: A ready-to-run assistant for your photography business. It drafts inquiry replies, booking proposals, shoot briefs, and captions for your recent work, always showing you drafts first.
+language: en
+skills:
+  - draft-an-inquiry-reply
+  - draft-a-booking-proposal
+  - prepare-a-shoot-brief
+  - draft-a-rebooking-note
+  - draft-a-recent-work-post
+schedules:
+  - morning-brief
+  - end-of-day
+  - inquiry-sweep
+workflows:
+  - weekly-marketing
+  - monthly-books
+templates:
+  - inquiry-reply
+  - booking-proposal
+  - shoot-brief
+  - promo-post
+memory_files:
+  - profile
+  - services
+  - staff
+  - clients
+  - suppliers
+  - policies
+  - brand
+connectors:
+  - name: Gmail
+    why: Reply drafts for inquiries land ready to send. You still press send.
+    status: confirmed-official-example
+  - name: Square
+    why: The month-end tidy-up can add itself up from deposits and payments instead of you reading numbers out.
+    status: confirmed-official-example
+  - name: Google Business Profile
+    why: Keep hours and services current, with review replies prepared for your yes. Posting stays your move.
+    status: candidate-remote-mcp
+  - name: Instagram & Facebook
+    why: No connection needed — Claude drafts your captions; you paste and post when you're happy.
+    status: local-or-export-fallback
