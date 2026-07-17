@@ -8,6 +8,8 @@
 - List which files and connected tools Claude may read for routine work.
 - Choose how long temporary exports in `inbox/` should be kept. Claude may flag old files but never deletes them.
 - Name the accountant, lawyer, technician, or other qualified person who reviews work outside Claude's lane, when relevant.
+- Choose one repeated job for the first Assisted routine. Record how it works today, its approved sources, a useful result, and a stop signal.
+- Review saved evidence before advancing a routine. A stage change never authorizes sending, posting, paying, filing, signing, deciding, or deleting.
 <!-- TUEL:CONTROL-CHECKLIST:END -->
 
 Claude works through this over time — never as a form, always as conversation. Tier 1 is enough for the first win. Everything else can wait.

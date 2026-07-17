@@ -4,11 +4,17 @@
 
 Millions of small-business owners do their marketing, bookkeeping, reminders, and admin at night, after the real work. The tools that could help assume they'll learn prompting, integrations, and dashboards. They won't, and they shouldn't have to.
 
-TUEL AI ships blueprints: downloadable business folders that turn Claude Desktop into a working operator for one specific kind of business, out of the box. The owner downloads their business, opens it, answers a few plain questions, and from that day Claude handles the busywork while always drafting first and leaving decisions with the owner.
+TUEL AI ships blueprints: downloadable business folders that turn Claude Desktop into a working operator for one specific kind of business. The owner downloads their business, opens it, answers a few plain questions, and starts with one useful draft. Claude earns more repeated work one routine at a time while always drafting first and leaving decisions with the owner.
 
 ## The north star
 
-Maria owns a three-chair salon. She downloads the `salon` folder, opens it, and says hello. In her first session, she reviews a drafted profile and a promo for the week. She turns on the morning brief and the end-of-day close. From then on Claude drafts her posts, answers booking questions, reminds clients to rebook, tallies the till and tips, and flags low stock, showing her everything before it goes out. Every blueprint is built to this bar: the first session ends with useful work, not setup theater.
+Maria owns a three-chair salon. She downloads the `salon` folder, opens it, and says hello. In her first session, she reviews a drafted profile and a promo for the week. She chooses the promo as her first Assisted routine, runs it manually, and records what helped and what needed correction. Later, she may add a reviewed morning brief, end-of-day close, rebooking drafts, till summaries, and low-stock flags. Each routine earns its place separately, and Maria sees everything before it goes out. Every blueprint is built to this bar: the first session ends with useful work and a clear next step, not setup theater.
+
+## How adoption grows
+
+The folder guides each routine through four stages: Assisted, Repeatable, Supervised operations, and Intent-led Business OS. Readiness comes first. The owner names the outcome, sources, useful-result signal, stop signal, and decision owner. A routine advances only when saved reviewed work shows that it is useful, traceable, and manageable.
+
+The stage describes repeatability, not authority. Even the most mature routine stops at observing, drafting, checking, reporting, and proposing. The owner remains accountable for every outside action and consequential decision.
 
 ## Why folders
 
@@ -27,4 +33,5 @@ Blueprints stay ordinary working folders. Packaged Skills or plugins may come la
 - Time from download to first accepted deliverable: under thirty minutes.
 - The first win requires zero connected tools.
 - Owners accept most drafts with light edits, and every edit teaches the folder something they approve.
-- The morning brief stays turned on, because it keeps earning its two minutes.
+- Owners can name the current stage, value, failure path, and next decision for every repeated routine.
+- Repeating tasks stay turned on only while their saved reviews show useful results and manageable corrections.

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Lint TUEL blueprint folders against TUEL Blueprint Standard 1.0.
+"""Lint TUEL blueprint folders against TUEL Blueprint Standard 1.1.
 
 Usage:
     python3 tools/lint.py [BLUEPRINT_DIR ...] [--json] [--strict] [--self-test]
@@ -35,11 +35,15 @@ SAFETY_FLOOR_PATH = STANDARD_ROOT / "safety-floor.md"
 SCHEDULE_CONTRACT_PATH = STANDARD_ROOT / "schedule-contract.md"
 CORE_ROOT = STANDARD_ROOT / "core"
 
-STANDARD_VERSION = "1.0.0"
+STANDARD_VERSION = "1.1.0"
+POLICY_VERSION = "1.0.0"
+DATA_LAYOUT_VERSION = "1.0.0"
+ADOPTION_PROFILE = "routine-evidence-v1"
 TEMPLATE_SLUG = "_blank"
 
 REQUIRED_FILES = (
     "START-HERE.md",
+    "ADOPT-AI.md",
     "blueprint.yaml",
     "CLAUDE.md",
     "UPGRADE.md",
@@ -49,19 +53,28 @@ REQUIRED_FILES = (
 )
 
 CORE_FILES = (
+    "ADOPT-AI.md",
     "roles/operator.md",
     "roles/reality-checker.md",
+    "roles/adoption-guide.md",
     "skills/review-the-work/SKILL.md",
+    "skills/find-next-ai-use-case/SKILL.md",
     "workflows/verify-a-draft.md",
     "workflows/review-business-memory.md",
     "workflows/handle-an-incident.md",
+    "workflows/advance-ai-adoption.md",
     "schedules/weekly-operations-review.md",
+    "schedules/monthly-ai-adoption-review.md",
     "templates/operations-board.md",
     "templates/work-receipt.md",
     "templates/decision-record.md",
     "templates/memory-proposal.md",
     "templates/incident-record.md",
     "templates/weekly-operations-review.md",
+    "templates/ai-adoption-plan.md",
+    "templates/ai-use-case-card.md",
+    "templates/ai-value-review.md",
+    "templates/exception-brief.md",
     "operations/README.md",
     "inbox/README.md",
     "UPGRADE.md",
@@ -75,12 +88,13 @@ MANIFEST_SECTIONS = {
     "templates": ("templates", "{slug}.md"),
     "memory_files": ("business", "{slug}.md"),
     "roles": ("roles", "{slug}.md"),
+    "adoption_guides": ("adoption", "{slug}.md"),
 }
 
 CORE_MANIFEST_ITEMS = {
-    "skills": {"review-the-work"},
-    "schedules": {"weekly-operations-review"},
-    "workflows": {"verify-a-draft", "review-business-memory", "handle-an-incident"},
+    "skills": {"review-the-work", "find-next-ai-use-case"},
+    "schedules": {"weekly-operations-review", "monthly-ai-adoption-review"},
+    "workflows": {"verify-a-draft", "review-business-memory", "handle-an-incident", "advance-ai-adoption"},
     "templates": {
         "operations-board",
         "work-receipt",
@@ -88,17 +102,23 @@ CORE_MANIFEST_ITEMS = {
         "memory-proposal",
         "incident-record",
         "weekly-operations-review",
+        "ai-adoption-plan",
+        "ai-use-case-card",
+        "ai-value-review",
+        "exception-brief",
     },
-    "roles": {"operator", "reality-checker"},
+    "roles": {"operator", "reality-checker", "adoption-guide"},
+    "adoption_guides": {"use-case-map"},
 }
 
 REQUIRED_MEMORY_FILES = {"profile", "services", "staff", "clients", "suppliers", "policies", "brand"}
 PROTECTED_PATHS = {"business/", "assets/", "reports/", "operations/", "inbox/"}
 
-MIN_SKILLS = 4
-MIN_SCHEDULES = 3
-MIN_WORKFLOWS = 3
-MIN_TEMPLATES = 6
+MIN_SKILLS = 5
+MIN_SCHEDULES = 4
+MIN_WORKFLOWS = 4
+MIN_TEMPLATES = 10
+MIN_ADOPTION_GUIDES = 1
 
 HARD_RULES_RE = re.compile(
     r"^[ ]{0,3}#{1,6}[ \t]+hard rules[ \t]*#*[ \t]*$",
@@ -125,10 +145,138 @@ FENCE_RE = re.compile(r"^[ \t]*```[^\n]*$", re.MULTILINE)
 
 OWNER_FACING_GLOBS = (
     "START-HERE.md",
+    "ADOPT-AI.md",
     "onboarding/*.md",
+    "adoption/*.md",
     "templates/*.md",
     "business/*.md",
     "connectors.md",
+)
+
+OPERATIONAL_GLOBS = (
+    "START-HERE.md",
+    "ADOPT-AI.md",
+    "CLAUDE.md",
+    "onboarding/*.md",
+    "roles/*.md",
+    "skills/*/SKILL.md",
+    "workflows/*.md",
+    "schedules/*.md",
+    "adoption/*.md",
+    "templates/*.md",
+    "connectors.md",
+)
+
+ADOPTION_STAGE_HEADINGS = (
+    ("Step 0. Readiness", re.compile(r"^[ ]{0,3}#{1,6}[ \t]+step[ \t]+0\.[ \t]+readiness[ \t]*#*[ \t]*$", re.IGNORECASE | re.MULTILINE)),
+    ("1. Assisted", re.compile(r"^[ ]{0,3}#{1,6}[ \t]+(?:step[ \t]+)?1\.[ \t]+assisted[ \t]*#*[ \t]*$", re.IGNORECASE | re.MULTILINE)),
+    ("2. Repeatable", re.compile(r"^[ ]{0,3}#{1,6}[ \t]+(?:step[ \t]+)?2\.[ \t]+repeatable[ \t]*#*[ \t]*$", re.IGNORECASE | re.MULTILINE)),
+    ("3. Supervised operations", re.compile(r"^[ ]{0,3}#{1,6}[ \t]+(?:step[ \t]+)?3\.[ \t]+supervised[ \t]+operations[ \t]*#*[ \t]*$", re.IGNORECASE | re.MULTILINE)),
+    ("4. Intent-led Business OS", re.compile(r"^[ ]{0,3}#{1,6}[ \t]+(?:step[ \t]+)?4\.[ \t]+intent-led[ \t]+business[ \t]+OS[ \t]*#*[ \t]*$", re.IGNORECASE | re.MULTILINE)),
+)
+
+ADOPTION_MAP_REQUIREMENTS = (
+    ("per-routine maturity", re.compile(r"maturity[ \t]+belongs[ \t]+to[ \t]+each[ \t]+routine", re.IGNORECASE)),
+    ("permission to stay", re.compile(r"(?:may|can)[ \t]+stay[ \t]+at[ \t]+any[ \t]+stage", re.IGNORECASE)),
+    ("Manual mode for new or changed routines", re.compile(r"Manual[ \t]+mode[^.\n]{0,120}new[ \t]+or[ \t]+changed[ \t]+routine", re.IGNORECASE)),
+    ("owner-only stage decisions", re.compile(r"Only[ \t]+the[ \t]+owner[ \t]+may[ \t]+advance", re.IGNORECASE)),
+    ("unchanged outside-action authority", re.compile(r"No[ \t]+stage[ \t]+authorizes[ \t]+Claude", re.IGNORECASE)),
+)
+
+OUTSIDE_ACTION_RE = re.compile(
+    r"\b(?:send|post|publish|pay|refund|file|sign|delete|book|order|purchase|"
+    r"submit|upload|share|change[ \t]+(?:an?[ \t]+)?outside[ \t]+system)"
+    r"(?:s|es|ed|ing)?\b",
+    re.IGNORECASE,
+)
+EXPLICIT_AGENT_OUTSIDE_ACTION_RE = re.compile(
+    r"\b(?:Claude|(?:the[ \t]+)?AI|the[ \t]+agent|the[ \t]+assistant|the[ \t]+schedule|the[ \t]+routine|the[ \t]+workflow)\b"
+    r"[ \t]+(?:(?:will|may|can|must|should|then|automatically|directly)[ \t]+|"
+    r"is[ \t]+(?:allowed|permitted|authorized)[ \t]+to[ \t]+){0,3}"
+    r"(?:send|post|publish|pay|refund|file|sign|delete|book|order|purchase|submit|upload|share)"
+    r"(?:s|es|ed|ing)?\b",
+    re.IGNORECASE,
+)
+EXPANSIVE_AGENT_OUTSIDE_ACTION_RE = re.compile(
+    r"\b(?:Claude|(?:the[ \t]+)?AI|the[ \t]+agent|the[ \t]+assistant|the[ \t]+schedule|the[ \t]+routine|the[ \t]+workflow)\b"
+    r"[ \t]+(?:(?:will|may|can|must|should)[ \t]+)?"
+    r"not[ \t]+(?:only|just|merely)\b[^.;:\n]{0,120}\bbut[ \t]+also[ \t]+"
+    r"(?:send|post|publish|pay|refund|file|sign|delete|book|order|purchase|submit|upload|share)"
+    r"(?:s|es|ed|ing)?\b",
+    re.IGNORECASE,
+)
+IMPERATIVE_OUTSIDE_ACTION_RE = re.compile(
+    r"^[ \t]*(?:(?:[-*]|\d+[.)])[ \t]+)?(?:\*\*)?"
+    r"(?:(?:then|next|finally)[,:]?[ \t]+)?"
+    r"(?:(?:if|after|once|when)\b[^.;:\n]{0,120}[,:][ \t]+)?"
+    r"(?:please[ \t]+)?"
+    r"(?P<action>"
+    r"(?:send|post|publish|pay|refund|file|sign|delete|book|purchase|submit|upload)"
+    r"[ \t]+(?:a|an|the|this|that|these|those|each|every|all|approved|exact|customer|client|"
+    r"message|messages|reply|replies|draft|drafts|appointment|appointments|job|jobs|session|sessions|"
+    r"payment|payments|form|forms|claim|claims|document|documents|request|requests|item|items)\b"
+    r"|issue[ \t]+(?:a|the)[ \t]+refund\b"
+    r"|order[ \t]+(?:(?:a|an|the|this|that|these|those)[ \t]+)?"
+    r"(?:stock|part|parts|supplies|materials|ingredients|stems|product|products|item|items)\b"
+    r")",
+    re.IGNORECASE,
+)
+EXPLICIT_HUMAN_ACTION_RE = re.compile(
+    r"\b(?:the[ \t]+owner|named[ \t]+human|human[ \t]+owner|manager|staff[ \t]+member|employee|"
+    r"bookkeeper|accountant|lawyer|technician|yourself|your[ \t]+own)\b",
+    re.IGNORECASE,
+)
+AGENT_ACTOR_RE = re.compile(r"\b(?:Claude|agent|assistant|schedule|routine|workflow)\b", re.IGNORECASE)
+AUTOMATION_MARKER_RE = re.compile(
+    r"\b(?:automatic(?:ally)?|unattended|on its own|without (?:asking|another approval|owner approval|human approval|review))\b",
+    re.IGNORECASE,
+)
+NEGATED_ACTION_RE = re.compile(
+    r"\b(?:never|not(?![ \t]+(?:only|just|merely)\b)|no|nothing|nowhere|"
+    r"do[ \t]+not(?![ \t]+(?:only|just|merely)\b)|"
+    r"does[ \t]+not(?![ \t]+(?:only|just|merely)\b)|"
+    r"must[ \t]+not(?![ \t]+(?:only|just|merely)\b)|"
+    r"may[ \t]+not(?![ \t]+(?:only|just|merely)\b)|cannot|can't)"
+    r"(?:\W+\w+){0,5}\W*$",
+    re.IGNORECASE,
+)
+NEGATIVE_ACTION_OBJECT_RE = re.compile(r"^(?:\W+\w+){0,3}\W+(?:nothing|nowhere)\b", re.IGNORECASE)
+LEADING_NEVER_RE = re.compile(r"^[ \t]*(?:(?:[-*]|\d+\.)[ \t]+)?(?:\*\*)?never\b", re.IGNORECASE)
+APPROVAL_BYPASS_RE = re.compile(
+    r"\b(?:no[ \t]+(?:fresh[ \t]+|owner[ \t]+|human[ \t]+)?(?:approval|review|confirmation)[ \t]+is[ \t]+(?:needed|required)|"
+    r"(?:approval|review|confirmation)[ \t]+is[ \t]+not[ \t]+(?:needed|required)|"
+    r"(?:does[ \t]+not|doesn't|need[ \t]+not)[ \t]+(?:need|wait[ \t]+for)[ \t]+(?:fresh[ \t]+|owner[ \t]+|human[ \t]+)?(?:approval|review|confirmation)|"
+    r"standing[ \t]+approval|blanket[ \t]+approval|approval[ \t]+for[ \t]+all[ \t]+future)\b",
+    re.IGNORECASE,
+)
+BLANKET_AUTO_RE = re.compile(
+    r"\b(?:auto(?:[ \t]+mode)?[ \t]+(?:is|stays|must[ \t]+be|should[ \t]+be)[ \t]+(?:always|permanently)[ \t]+on|"
+    r"(?:always|permanently)[ \t]+(?:use|enable|keep)[ \t]+auto(?:[ \t]+mode)?|"
+    r"use[ \t]+auto(?:[ \t]+mode)?[ \t]+(?:for[ \t]+everything|across[ \t]+all))\b",
+    re.IGNORECASE,
+)
+CLINICAL_ACTION_RE = re.compile(
+    r"\b(?:diagnose[sd]?|diagnosing|treat(?:s|ed|ing)?|prescribe[sd]?|prescribing|"
+    r"assess(?:es|ed|ing)?|determine[sd]?|determining|decide[sd]?|deciding|recommend(?:s|ed|ing)?)\b",
+    re.IGNORECASE,
+)
+CLINICAL_TARGET_RE = re.compile(
+    r"\b(?:medical[ \t]+(?:condition|status|need|risk|record)|"
+    r"clinical[ \t]+(?:condition|status|decision|judgment|record)|"
+    r"diagnosis|treatment|medication|dose|injury|illness|crisis|"
+    r"fit(?:ness)?[ \t]+to[ \t]+(?:work|return|drive)|fit[ \t]+for[ \t]+class|"
+    r"safe[ \t]+to[ \t]+(?:work|return|drive))\b",
+    re.IGNORECASE,
+)
+QUALIFIED_HUMAN_RE = re.compile(
+    r"\b(?:doctor|clinician|physician|physio(?:therapist)?|licensed professional|qualified professional|medical professional)\b",
+    re.IGNORECASE,
+)
+PROFESSIONAL_REFERRAL_RE = re.compile(
+    r"\b(?:see|consult|contact|ask|refer(?:s|red|ring)?[ \t]+(?:them[ \t]+)?to)\b"
+    r"[^.]{0,60}\b(?:doctor|clinician|physician|physio(?:therapist)?|licensed professional|"
+    r"qualified professional|medical professional)\b",
+    re.IGNORECASE,
 )
 JARGON_RE = re.compile(r"\b(connectors?|MCP|schemas?|APIs?|endpoints?)\b", re.IGNORECASE)
 CURRENCY_RE = re.compile(r"(?:\$\s?\d|\b(?:USD|EUR|GBP)\s+\d)", re.IGNORECASE)
@@ -153,28 +301,33 @@ FALSE_PLATFORM_CLAIMS = (
      "do not promise missed-run behavior that the current platform does not document"),
 )
 
-MARKED_CONTROL_REQUIREMENTS = {
-    "START-HERE.md": (
+MARKED_CONTROL_REQUIREMENTS = (
+    ("START-HERE.md",
         "<!-- TUEL:OWNER-SETUP:START -->",
         "<!-- TUEL:OWNER-SETUP:END -->",
         ("ordinary working folder", "eligible Claude account", "processes the files", "Manual mode"),
     ),
-    "onboarding/interview.md": (
+    ("onboarding/interview.md",
         "<!-- TUEL:SETUP-CONTROLS:START -->",
         "<!-- TUEL:SETUP-CONTROLS:END -->",
-        ("read the full `CLAUDE.md`", "named decision owner", "local time zone", "operations/setup-status.md"),
+        ("read the full `CLAUDE.md`", "named decision owner", "local time zone", "operations/setup-status.md", "review-business-memory.md"),
     ),
-    "onboarding/checklist.md": (
+    ("onboarding/checklist.md",
         "<!-- TUEL:CONTROL-CHECKLIST:START -->",
         "<!-- TUEL:CONTROL-CHECKLIST:END -->",
         ("approves decisions", "local time zone", "temporary exports", "never deletes"),
     ),
-    "CLAUDE.md": (
+    ("CLAUDE.md",
         "<!-- TUEL:BUSINESS-OS:START -->",
         "<!-- TUEL:BUSINESS-OS:END -->",
         ("named owner", "roles/reality-checker.md", "work receipt", "review-business-memory.md"),
     ),
-}
+    ("CLAUDE.md",
+        "<!-- TUEL:ADOPTION:START -->",
+        "<!-- TUEL:ADOPTION:END -->",
+        ("per named routine", "Manual mode", "Only the owner may advance", "not authority", "A Observe or B Draft", "review-business-memory.md"),
+    ),
+)
 
 SCHEDULE_PROMPT_REQUIREMENTS = (
     "Read the full CLAUDE.md before doing anything.",
@@ -389,6 +542,98 @@ def _owner_facing_files(bp_dir: Path) -> list[Path]:
     return sorted(set(path for path in files if path.is_file()))
 
 
+def _operational_files(bp_dir: Path) -> list[Path]:
+    files: list[Path] = []
+    for pattern in OPERATIONAL_GLOBS:
+        files.extend(sorted(bp_dir.glob(pattern)))
+    return sorted(set(path for path in files if path.is_file()))
+
+
+def _is_locally_negated(line: str, position: int) -> bool:
+    """Return True only when a nearby negative directly governs a matched phrase."""
+
+    return bool(NEGATED_ACTION_RE.search(line[max(0, position - 120):position]))
+
+
+def _looks_like_action_noun(line: str, match: re.Match[str]) -> bool:
+    token = match.group(0).casefold()
+    if token not in {"post", "posts", "file", "files", "book", "books", "order", "orders", "share", "shares"}:
+        return False
+    prefix = line[max(0, match.start() - 50):match.start()]
+    return bool(
+        re.search(
+            r"(?:\b(?:a|an|the|one|each|every|this|that|your|no|today's|tomorrow's|appointment|booking)|"
+            r"\b[\w-]+[’']s)\s+$",
+            prefix,
+            re.IGNORECASE,
+        )
+    )
+
+
+def _last_match_start(regex: re.Pattern[str], text: str) -> int:
+    return max((match.start() for match in regex.finditer(text)), default=-1)
+
+
+def _unsafe_authority_issue(line: str) -> str | None:
+    """Find narrow, explicit contradictions to the draft-first safety floor."""
+
+    bypass = APPROVAL_BYPASS_RE.search(line)
+    if bypass and not _is_locally_negated(line, bypass.start()):
+        return "bypasses fresh owner approval"
+
+    blanket_auto = BLANKET_AUTO_RE.search(line)
+    if blanket_auto and not _is_locally_negated(line, blanket_auto.start()):
+        return "enables Auto mode as a blanket rule"
+
+    explicit_agent_action = EXPLICIT_AGENT_OUTSIDE_ACTION_RE.search(line)
+    if (
+        explicit_agent_action
+        and not _is_locally_negated(line, explicit_agent_action.start())
+        and not NEGATIVE_ACTION_OBJECT_RE.search(line[explicit_agent_action.end():])
+    ):
+        return "authorizes Claude or a routine to perform an outside action"
+
+    expansive_agent_action = EXPANSIVE_AGENT_OUTSIDE_ACTION_RE.search(line)
+    if (
+        expansive_agent_action
+        and not _is_locally_negated(line, expansive_agent_action.start())
+        and not NEGATIVE_ACTION_OBJECT_RE.search(line[expansive_agent_action.end():])
+    ):
+        return "authorizes Claude or a routine to perform an outside action"
+
+    imperative_action = IMPERATIVE_OUTSIDE_ACTION_RE.search(line)
+    if (
+        imperative_action
+        and not _is_locally_negated(line, imperative_action.start("action"))
+        and not NEGATIVE_ACTION_OBJECT_RE.search(line[imperative_action.end("action"):])
+        and not EXPLICIT_HUMAN_ACTION_RE.search(line)
+    ):
+        return "uses an imperative outside action without assigning it to the owner or another human"
+
+    for clause in re.split(r"(?<=[.!?;])\s+", line):
+        if not AUTOMATION_MARKER_RE.search(clause):
+            continue
+        for action in OUTSIDE_ACTION_RE.finditer(clause):
+            if _looks_like_action_noun(clause, action):
+                continue
+            if not _is_locally_negated(clause, action.start()):
+                return f"automates outside action {action.group(0)!r}"
+
+    clinical_target = CLINICAL_TARGET_RE.search(line)
+    if clinical_target and not PROFESSIONAL_REFERRAL_RE.search(line) and not LEADING_NEVER_RE.search(line):
+        for action in CLINICAL_ACTION_RE.finditer(line):
+            if _is_locally_negated(line, action.start()):
+                continue
+            prefix = line[:action.start()]
+            qualified_human = _last_match_start(QUALIFIED_HUMAN_RE, prefix)
+            agent_actor = _last_match_start(AGENT_ACTOR_RE, prefix)
+            if qualified_human >= 0 and qualified_human > agent_actor:
+                continue
+            return "authorizes a clinical, injury-fitness, or crisis judgment"
+
+    return None
+
+
 def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Finding]:
     findings: list[Finding] = []
     err = lambda check, message: findings.append(Finding("error", check, message))
@@ -442,14 +687,22 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
 
         version = manifest.get("version")
         if isinstance(version, str) and re.fullmatch(r"\d+\.\d+\.\d+", version):
-            if int(version.split(".", 1)[0]) < 1:
-                err("version", "Business OS safety and layout changes require blueprint version 1.0.0 or later")
+            version_parts = tuple(int(part) for part in version.split("."))
+            if version_parts < (1, 1, 0):
+                err("version", "the adoption layer requires blueprint version 1.1.0 or later")
 
-        for key in ("standard_version", "policy_version", "data_layout_version"):
-            if manifest.get(key) != STANDARD_VERSION:
-                err("version", f"{key} must be {STANDARD_VERSION}")
+        expected_versions = {
+            "standard_version": STANDARD_VERSION,
+            "policy_version": POLICY_VERSION,
+            "data_layout_version": DATA_LAYOUT_VERSION,
+        }
+        for key, expected in expected_versions.items():
+            if manifest.get(key) != expected:
+                err("version", f"{key} must be {expected}")
         if manifest.get("operating_profile") != "draft-only-v1":
             err("version", "operating_profile must be draft-only-v1")
+        if manifest.get("adoption_profile") != ADOPTION_PROFILE:
+            err("adoption-profile", f"adoption_profile must be {ADOPTION_PROFILE}")
 
         checked_on = manifest.get("platform_claims_checked_on")
         if not _valid_iso_date(checked_on):
@@ -473,7 +726,10 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
                     err("core-manifest", f"{key} is missing standard core item(s): {', '.join(sorted(missing))}")
         roles = manifest.get("roles")
         if isinstance(roles, list) and set(roles) != CORE_MANIFEST_ITEMS["roles"]:
-            err("roles", "roles must be exactly operator and reality-checker")
+            err("roles", "roles must be exactly adoption-guide, operator, and reality-checker")
+        adoption_guides = manifest.get("adoption_guides")
+        if isinstance(adoption_guides, list) and set(adoption_guides) != CORE_MANIFEST_ITEMS["adoption_guides"]:
+            err("adoption-guides", "adoption_guides must be exactly use-case-map")
 
     # 4. Operating-instruction contract and exact safety floor.
     claude_path = bp_dir / "CLAUDE.md"
@@ -493,7 +749,7 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
                 err("operating-agent", "the Short version section must say to read the full CLAUDE.md first")
 
     # Setup and operating controls are marked so the synchronizer can update them safely.
-    for rel, (start, end, phrases) in MARKED_CONTROL_REQUIREMENTS.items():
+    for rel, start, end, phrases in MARKED_CONTROL_REQUIREMENTS:
         path = bp_dir / rel
         if not path.is_file():
             continue
@@ -517,6 +773,18 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
             err("standard-core", f"missing standard-owned core file {rel}")
         elif _normalized_text(target) != _normalized_text(source):
             err("standard-core", f"{rel} differs from standard/core/{rel}")
+
+    adoption_map = bp_dir / "adoption/use-case-map.md"
+    if not adoption_map.is_file():
+        err("adoption-stage-map", "adoption/use-case-map.md is missing")
+    else:
+        adoption_map_text = _read(adoption_map)
+        for label, heading in ADOPTION_STAGE_HEADINGS:
+            if not heading.search(adoption_map_text):
+                err("adoption-stage-map", f"adoption/use-case-map.md is missing heading {label!r}")
+        for label, requirement in ADOPTION_MAP_REQUIREMENTS:
+            if not requirement.search(adoption_map_text):
+                err("adoption-stage-map", f"adoption/use-case-map.md is missing {label}")
 
     # 6. Manifest to disk coverage in both directions.
     if manifest is not None:
@@ -549,17 +817,19 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
     schedule_files = sorted((bp_dir / "schedules").glob("*.md")) if (bp_dir / "schedules").is_dir() else []
     workflow_files = sorted((bp_dir / "workflows").glob("*.md")) if (bp_dir / "workflows").is_dir() else []
     template_files = sorted((bp_dir / "templates").glob("*.md")) if (bp_dir / "templates").is_dir() else []
+    adoption_files = sorted((bp_dir / "adoption").glob("*.md")) if (bp_dir / "adoption").is_dir() else []
 
-    for key, count, minimum in (
-        ("skills", len(skill_files), MIN_SKILLS),
-        ("schedules", len(schedule_files), MIN_SCHEDULES),
-        ("workflows", len(workflow_files), MIN_WORKFLOWS),
-        ("templates", len(template_files), MIN_TEMPLATES),
+    for check_name, label, count, minimum in (
+        ("skills", "skills", len(skill_files), MIN_SKILLS),
+        ("schedules", "schedules", len(schedule_files), MIN_SCHEDULES),
+        ("workflows", "workflows", len(workflow_files), MIN_WORKFLOWS),
+        ("templates", "templates", len(template_files), MIN_TEMPLATES),
+        ("adoption-guides", "adoption guides", len(adoption_files), MIN_ADOPTION_GUIDES),
     ):
         if count < minimum:
-            err(key, f"needs at least {minimum} {key}, found {count}")
+            err(check_name, f"needs at least {minimum} {label}, found {count}")
 
-    # 8. Every operational artifact declares an action level. Schedules are A/B only.
+    # 8. Every operational artifact declares one consistent ceiling. Adoption never expands authority.
     for kind, files in (("skills", skill_files), ("workflows", workflow_files), ("schedules", schedule_files)):
         for path in files:
             text = _read(path)
@@ -567,8 +837,17 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
             rel = path.relative_to(bp_dir)
             if not levels:
                 err("action-level", f"{rel} has no action-level declaration")
-            if kind == "schedules" and any(level not in {"A", "B"} for level in levels):
+                continue
+            unique_levels = set(levels)
+            if len(unique_levels) > 1:
+                err("action-level", f"{rel} has conflicting action-level declarations: {', '.join(sorted(unique_levels))}")
+            if kind == "schedules" and any(level not in {"A", "B"} for level in unique_levels):
                 err("schedule-safety", f"{rel} declares a level above B; schedules are observe or draft only")
+            if kind in {"skills", "workflows"} and unique_levels.intersection({"D", "E", "F"}):
+                err("action-level", f"{rel} declares D, E, or F authority; those actions remain human work")
+            c_allowed = kind == "workflows" and rel.as_posix() == "workflows/review-business-memory.md"
+            if "C" in unique_levels and not c_allowed:
+                err("action-level", f"{rel} declares C authority; only workflows/review-business-memory.md may do so")
 
     # 9. Every schedule uses the exact run contract and one copy-paste prompt.
     schedule_contract = _normalized_text(SCHEDULE_CONTRACT_PATH).rstrip("\n")
@@ -653,7 +932,16 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
                 if regex.search(line):
                     err("platform-claim", f"{path.relative_to(bp_dir)}:{line_number} {guidance}")
 
-    # 13. No unresolved authoring markers in a real blueprint.
+    # 13. Operational prose may not contradict the safety floor outside its exact block.
+    for path in _operational_files(bp_dir):
+        for line_number, line in enumerate(_read(path).splitlines(), start=1):
+            if _line_exempt(line, template_mode):
+                continue
+            issue = _unsafe_authority_issue(line)
+            if issue:
+                err("unsafe-authority", f"{path.relative_to(bp_dir)}:{line_number} {issue}")
+
+    # 14. No unresolved authoring markers in a real blueprint.
     for path in sorted(bp_dir.rglob("*")):
         if not path.is_file() or path.suffix.lower() not in {".md", ".yaml", ".yml", ".json", ".txt"}:
             continue
@@ -664,7 +952,7 @@ def lint_blueprint(bp_dir: Path, schema: dict, template_mode: bool) -> list[Find
                 if marker:
                     err("unresolved", f"{path.relative_to(bp_dir)}:{line_number} contains unresolved marker {marker.group(0)!r}")
 
-    # 14. Package hygiene and protected seed-directory contents.
+    # 15. Package hygiene and protected seed-directory contents.
     for path in sorted(bp_dir.rglob("*")):
         rel = path.relative_to(bp_dir)
         if path.is_symlink():
@@ -820,21 +1108,27 @@ def _make_blueprint(
     )
     _write(bp / "START-HERE.md", start)
 
-    skills = ["review-the-work", *skill_names]
+    skills = ["review-the-work", "find-next-ai-use-case", *skill_names]
     manifest = {
         "name": "Test Business",
         "slug": slug,
-        "version": "1.0.0",
+        "version": "1.1.0",
         "standard_version": STANDARD_VERSION,
-        "policy_version": STANDARD_VERSION,
-        "data_layout_version": STANDARD_VERSION,
+        "policy_version": POLICY_VERSION,
+        "data_layout_version": DATA_LAYOUT_VERSION,
         "operating_profile": "draft-only-v1",
+        "adoption_profile": ADOPTION_PROFILE,
         "platform_claims_checked_on": "2026-07-17",
         "business_type": "test business",
         "summary": "A test business working folder.",
         "skills": skills,
-        "schedules": ["morning-brief", "end-of-day", "weekly-operations-review"],
-        "workflows": ["verify-a-draft", "review-business-memory", "handle-an-incident"],
+        "schedules": [
+            "morning-brief",
+            "end-of-day",
+            "weekly-operations-review",
+            "monthly-ai-adoption-review",
+        ],
+        "workflows": ["verify-a-draft", "review-business-memory", "handle-an-incident", "advance-ai-adoption"],
         "templates": [
             "operations-board",
             "work-receipt",
@@ -842,9 +1136,14 @@ def _make_blueprint(
             "memory-proposal",
             "incident-record",
             "weekly-operations-review",
+            "ai-adoption-plan",
+            "ai-use-case-card",
+            "ai-value-review",
+            "exception-brief",
         ],
         "memory_files": sorted(REQUIRED_MEMORY_FILES),
-        "roles": ["operator", "reality-checker"],
+        "roles": ["operator", "reality-checker", "adoption-guide"],
+        "adoption_guides": ["use-case-map"],
         "protected_paths": ["business/", "assets/", "reports/", "operations/", "inbox/"],
         "connectors": [],
     }
@@ -858,6 +1157,11 @@ def _make_blueprint(
             + "\n<!-- TUEL:BUSINESS-OS:START -->\n"
             + "## Business OS loop\n\nConfirm the named owner. Use roles/reality-checker.md, save a work receipt, and use review-business-memory.md.\n"
             + "<!-- TUEL:BUSINESS-OS:END -->\n\n"
+            + "<!-- TUEL:ADOPTION:START -->\n"
+            + "## AI adoption path\n\nAdoption is earned per named routine. Start new work in Manual mode. "
+            + "Only the owner may advance a routine. A later stage adds evidence, not authority, and remains A Observe or B Draft. "
+            + "Use review-business-memory.md for approved memory changes.\n"
+            + "<!-- TUEL:ADOPTION:END -->\n\n"
             + "## Operating loop\n\nRead, draft, verify, review, receipt.\n"
         )
     else:
@@ -869,7 +1173,7 @@ def _make_blueprint(
         "# First conversation\n\n"
         "<!-- TUEL:SETUP-CONTROLS:START -->\n"
         "## Keep setup resumable\n\nRead the full `CLAUDE.md`. Ask for the named decision owner and local time zone. "
-        "Save confirmed setup state to operations/setup-status.md.\n"
+        "Save confirmed setup state to operations/setup-status.md. Use review-business-memory.md for approved memory changes.\n"
         "<!-- TUEL:SETUP-CONTROLS:END -->\n\n"
         "Ask one question at a time and save a first draft.\n",
     )
@@ -890,6 +1194,18 @@ def _make_blueprint(
 
     for rel in CORE_FILES:
         _write(bp / rel, _normalized_text(CORE_ROOT / rel))
+    _write(
+        bp / "adoption/use-case-map.md",
+        "# AI adoption map\n\n"
+        "Maturity belongs to each routine, not the whole business. The owner may stay at any stage. "
+        "Use Manual mode for every new or changed routine. Only the owner may advance it. "
+        "No stage authorizes Claude to take an outside action.\n\n"
+        "## Step 0. Readiness\n\nName the owner, source, result, success signal, and stop signal.\n\n"
+        "## 1. Assisted\n\nOne reviewed draft at a time.\n\n"
+        "## 2. Repeatable\n\nRepeat a proven manual routine.\n\n"
+        "## 3. Supervised operations\n\nSchedule a narrow reports-only routine.\n\n"
+        "## 4. Intent-led Business OS\n\nSurface exceptions for the owner to decide.\n",
+    )
 
     for skill in skill_names:
         if skill == drop_skill_file:
@@ -922,6 +1238,7 @@ def self_test(schema: dict) -> int:
             template_mode: bool,
             expect_errors: bool,
             expect_warnings: bool | None = None,
+            required_checks: set[str] | None = None,
         ) -> None:
             findings = lint_blueprint(bp, schema, template_mode)
             errors = [finding for finding in findings if finding.level == "error"]
@@ -929,11 +1246,82 @@ def self_test(schema: dict) -> int:
             ok = bool(errors) == expect_errors
             if expect_warnings is not None:
                 ok = ok and bool(warnings) == expect_warnings
+            if required_checks:
+                ok = ok and required_checks.issubset({finding.check for finding in errors})
             cases.append((name, ok, [f"{finding.level}:{finding.check}:{finding.message}" for finding in findings]))
 
         bp = root / "valid-shop"
         _make_blueprint(bp, "valid-shop")
         check("valid blueprint passes", bp, False, expect_errors=False, expect_warnings=False)
+
+        bp = root / "missing-adoption-profile"
+        _make_blueprint(bp, "missing-adoption-profile")
+        manifest = _read_test_manifest(bp)
+        manifest.pop("adoption_profile")
+        _write_test_manifest(bp, manifest)
+        check(
+            "missing adoption profile fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"adoption-profile"},
+        )
+
+        bp = root / "wrong-adoption-profile"
+        _make_blueprint(bp, "wrong-adoption-profile")
+        manifest = _read_test_manifest(bp)
+        manifest["adoption_profile"] = "blanket-auto-v0"
+        _write_test_manifest(bp, manifest)
+        check(
+            "wrong adoption profile fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"adoption-profile"},
+        )
+
+        bp = root / "missing-stage-map"
+        _make_blueprint(bp, "missing-stage-map")
+        (bp / "adoption/use-case-map.md").unlink()
+        check(
+            "missing adoption stage map fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"adoption-stage-map"},
+        )
+
+        bp = root / "incomplete-stage-map"
+        _make_blueprint(bp, "incomplete-stage-map")
+        _write(bp / "adoption/use-case-map.md", "# Adoption map\n\n## 1. Assisted\n")
+        check(
+            "incomplete adoption stage map fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"adoption-stage-map"},
+        )
+
+        for name, old, replacement in (
+            ("adoption map without readiness fails", "## Step 0. Readiness", "## Preparation"),
+            ("adoption map without per-routine maturity fails", "Maturity belongs to each routine", "Maturity belongs to the business"),
+            ("adoption map without permission to stay fails", "The owner may stay at any stage", "The owner should keep advancing"),
+            ("adoption map without Manual reset fails", "Use Manual mode for every new or changed routine", "Review changed routines"),
+            ("adoption map without owner-only decision fails", "Only the owner may advance it", "The routine may advance"),
+            ("adoption map without authority boundary fails", "No stage authorizes Claude to take an outside action", "Later stages add outside actions"),
+        ):
+            slug = re.sub(r"[^a-z]+", "-", name.casefold()).strip("-")
+            bp = root / slug
+            _make_blueprint(bp, slug)
+            path = bp / "adoption/use-case-map.md"
+            _write(path, _read(path).replace(old, replacement, 1))
+            check(
+                name,
+                bp,
+                False,
+                expect_errors=True,
+                required_checks={"adoption-stage-map"},
+            )
 
         bp = root / "no-start"
         _make_blueprint(bp, "no-start")
@@ -969,7 +1357,153 @@ def self_test(schema: dict) -> int:
         bp = root / "unsafe-schedule"
         _make_blueprint(bp, "unsafe-schedule")
         _write(bp / "schedules/morning-brief.md", _read(bp / "schedules/morning-brief.md") + "\nAction level: D - send it.\n")
-        check("schedule above level B fails", bp, False, expect_errors=True)
+        check(
+            "schedule above level B fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"action-level", "schedule-safety"},
+        )
+
+        bp = root / "unsafe-workflow-level"
+        _make_blueprint(bp, "unsafe-workflow-level")
+        manifest = _read_test_manifest(bp)
+        manifest["workflows"].append("perform-outside-action")
+        _write_test_manifest(bp, manifest)
+        _write(
+            bp / "workflows/perform-outside-action.md",
+            "# Perform outside action\n\nPrepare and execute it.\n\nAction level: D - consequential action.\n",
+        )
+        check(
+            "workflow D through F fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"action-level"},
+        )
+
+        bp = root / "unsafe-c-skill"
+        _make_blueprint(bp, "unsafe-c-skill")
+        _write(
+            bp / "skills/greet-clients/SKILL.md",
+            _read(bp / "skills/greet-clients/SKILL.md").replace("Action level: B", "Action level: C"),
+        )
+        check(
+            "skill C fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"action-level"},
+        )
+
+        bp = root / "automatic-send"
+        _make_blueprint(bp, "automatic-send")
+        _write(
+            bp / "skills/greet-clients/SKILL.md",
+            "# Greet clients\n\nSend every approved client message automatically, without asking again.\n\n"
+            "Action level: B - drafts only.\n",
+        )
+        check(
+            "automatic outside action fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"unsafe-authority"},
+        )
+
+        for slug, sentence in (
+            ("allowed-to-send", "Claude is allowed to send the approved reply."),
+            ("permitted-to-send", "Claude is permitted to send the approved reply."),
+            ("ai-should-send", "The AI should send the approved reply."),
+            ("not-only-draft", "Claude may not only draft but also send the approved reply."),
+        ):
+            bp = root / slug
+            _make_blueprint(bp, slug)
+            _write(
+                bp / "skills/greet-clients/SKILL.md",
+                f"# Greet clients\n\n{sentence}\n\nAction level: B - drafts only.\n",
+            )
+            check(
+                f"{slug.replace('-', ' ')} fails",
+                bp,
+                False,
+                expect_errors=True,
+                required_checks={"unsafe-authority"},
+            )
+
+        bp = root / "negated-agent-actions"
+        _make_blueprint(bp, "negated-agent-actions")
+        _write(
+            bp / "skills/greet-clients/SKILL.md",
+            "# Greet clients\n\nClaude is not allowed to send messages. "
+            "The AI should never post them.\n\nAction level: B - drafts only.\n",
+        )
+        check(
+            "negated agent actions pass",
+            bp,
+            False,
+            expect_errors=False,
+            expect_warnings=False,
+        )
+
+        bp = root / "imperative-outside-actions"
+        _make_blueprint(bp, "imperative-outside-actions")
+        _write(
+            bp / "skills/greet-clients/SKILL.md",
+            "# Greet clients\n\n"
+            "Send the exact reply after the owner approves it.\n"
+            "Post the approved draft to Instagram.\n"
+            "Issue the refund after fresh approval.\n"
+            "Book the appointment after review.\n"
+            "File the approved form.\n"
+            "Delete the approved record.\n\n"
+            "Action level: B - drafts only.\n",
+        )
+        check(
+            "imperative outside actions fail",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"unsafe-authority"},
+        )
+
+        bp = root / "human-outside-actions"
+        _make_blueprint(bp, "human-outside-actions")
+        _write(
+            bp / "skills/greet-clients/SKILL.md",
+            "# Greet clients\n\nPrepare the exact reply. The owner sends it after fresh review.\n\n"
+            "Action level: B - drafts only.\n",
+        )
+        check("explicit human outside action passes", bp, False, expect_errors=False, expect_warnings=False)
+
+        bp = root / "blanket-auto"
+        _make_blueprint(bp, "blanket-auto")
+        _write(
+            bp / "skills/greet-clients/SKILL.md",
+            "# Greet clients\n\nAuto mode is always on for this routine.\n\nAction level: B - drafts only.\n",
+        )
+        check(
+            "blanket Auto mode fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"unsafe-authority"},
+        )
+
+        bp = root / "clinical-decision"
+        _make_blueprint(bp, "clinical-decision")
+        _write(
+            bp / "skills/greet-clients/SKILL.md",
+            "# Greet clients\n\nAssess each member injury and recommend whether they are fit to return to class.\n\n"
+            "Action level: B - drafts only.\n",
+        )
+        check(
+            "clinical or fitness decision fails",
+            bp,
+            False,
+            expect_errors=True,
+            required_checks={"unsafe-authority"},
+        )
 
         bp = root / "unresolved-shop"
         _make_blueprint(bp, "unresolved-shop")

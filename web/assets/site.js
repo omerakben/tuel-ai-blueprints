@@ -8,7 +8,7 @@
     care: "Care & coaching",
     trades: "Trades & crews",
   };
-  const helloPrompt = "Please read START-HERE.md in this folder, then help me set up my business here. Ask me one question at a time, with no tech talk. Show me every draft and every change before you save it. Never send, post, book, order, pay, file, sign, or delete anything. I handle those actions myself. Let's end today with my first useful draft saved in the reports folder.";
+  const helloPrompt = "Please read START-HERE.md and ADOPT-AI.md in this folder, then help me set up my business here. Ask me one question at a time, with no tech talk. Help me choose one repeated job for an Assisted start, define what success and a stop signal look like, and save an adoption plan with my first useful draft. Show me every draft and every change before you save it. Never send, post, book, order, pay, file, sign, decide, or delete anything. I handle those actions myself.";
 
   const grid = document.getElementById("catalog-grid");
   const search = document.getElementById("business-search");
@@ -39,7 +39,7 @@
     const name = escapeHtml(blueprint.name);
     const slug = escapeHtml(blueprint.slug);
     const checksum = escapeHtml(blueprint.sha256);
-    const tree = `${slug}/\n├── START-HERE.md\n├── CLAUDE.md\n├── UPGRADE.md\n├── business/\n├── inbox/\n├── operations/\n├── roles/\n├── skills/\n├── schedules/\n├── templates/\n├── workflows/\n└── reports/`;
+    const tree = `${slug}/\n├── START-HERE.md\n├── ADOPT-AI.md\n├── CLAUDE.md\n├── UPGRADE.md\n├── adoption/\n├── business/\n├── inbox/\n├── operations/\n├── roles/\n├── skills/\n├── schedules/\n├── templates/\n├── workflows/\n└── reports/`;
 
     return `
       <article class="blueprint-card" aria-labelledby="${titleId}"

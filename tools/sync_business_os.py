@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Synchronize TUEL Business OS v1 into every source blueprint.
+"""Synchronize the versioned TUEL Business OS into every source blueprint.
 
 Usage:
     python3 tools/sync_business_os.py --write
@@ -24,32 +24,51 @@ CORE = ROOT / "standard" / "core"
 SAFETY = ROOT / "standard" / "safety-floor.md"
 SCHEDULE_CONTRACT = ROOT / "standard" / "schedule-contract.md"
 BLANK = ROOT / "templates" / "_blank"
+STANDARD_VERSION = "1.1.0"
+BLUEPRINT_VERSION = "1.1.0"
+POLICY_VERSION = "1.0.0"
+DATA_LAYOUT_VERSION = "1.0.0"
+ADOPTION_PROFILE = "routine-evidence-v1"
 
 CORE_FILES = (
+    "ADOPT-AI.md",
     "UPGRADE.md",
     "inbox/README.md",
     "operations/README.md",
     "roles/operator.md",
     "roles/reality-checker.md",
+    "roles/adoption-guide.md",
     "schedules/weekly-operations-review.md",
+    "schedules/monthly-ai-adoption-review.md",
     "skills/review-the-work/SKILL.md",
+    "skills/find-next-ai-use-case/SKILL.md",
     "templates/decision-record.md",
     "templates/incident-record.md",
     "templates/memory-proposal.md",
     "templates/operations-board.md",
     "templates/weekly-operations-review.md",
+    "templates/ai-adoption-plan.md",
+    "templates/ai-use-case-card.md",
+    "templates/ai-value-review.md",
+    "templates/exception-brief.md",
     "templates/work-receipt.md",
     "workflows/handle-an-incident.md",
     "workflows/review-business-memory.md",
     "workflows/verify-a-draft.md",
+    "workflows/advance-ai-adoption.md",
 )
 
 PROTECTED_SEEDS = {"inbox/README.md", "operations/README.md"}
 
 LIST_ADDITIONS = {
-    "skills": ("review-the-work",),
-    "schedules": ("weekly-operations-review",),
-    "workflows": ("verify-a-draft", "review-business-memory", "handle-an-incident"),
+    "skills": ("review-the-work", "find-next-ai-use-case"),
+    "schedules": ("weekly-operations-review", "monthly-ai-adoption-review"),
+    "workflows": (
+        "verify-a-draft",
+        "review-business-memory",
+        "handle-an-incident",
+        "advance-ai-adoption",
+    ),
     "templates": (
         "operations-board",
         "work-receipt",
@@ -57,7 +76,13 @@ LIST_ADDITIONS = {
         "memory-proposal",
         "incident-record",
         "weekly-operations-review",
+        "ai-adoption-plan",
+        "ai-use-case-card",
+        "ai-value-review",
+        "exception-brief",
     ),
+    "roles": ("operator", "reality-checker", "adoption-guide"),
+    "adoption_guides": ("use-case-map",),
 }
 
 CONNECTOR_FACTS = {
@@ -98,18 +123,35 @@ BUSINESS_OS_BLOCK = """<!-- TUEL:BUSINESS-OS:START -->
 The role, skill, workflow, schedule, and manifest files are TUEL folder conventions. They do not install, register, or grant access by themselves.
 <!-- TUEL:BUSINESS-OS:END -->"""
 
+ADOPTION_BLOCK = """<!-- TUEL:ADOPTION:START -->
+## AI adoption path
+
+- Read `ADOPT-AI.md` before proposing a new routine or recurring task.
+- Adoption is earned per named routine, never granted to the whole business. A new or materially changed routine starts in Manual mode at Assisted.
+- Use `templates/ai-use-case-card.md` and `templates/ai-adoption-plan.md` to record the outcome, owner, approved sources, baseline, success signal, stop signal, and evidence from reviewed runs.
+- Only the owner may advance, pause, move back, or retire a routine. Claude may recommend a decision but never changes the stage itself.
+- A later stage increases repeatability and evidence, not authority. Unattended work stays at A Observe or B Draft. Every outside action and consequential decision remains human work.
+- Business memory changes only through `workflows/review-business-memory.md`, after the named owner freshly approves the exact proposed change.
+<!-- TUEL:ADOPTION:END -->"""
+
 OWNER_SETUP_BLOCK = """<!-- TUEL:OWNER-SETUP:START -->
 ## Before you begin
 
 This is an ordinary working folder. Nothing inside installs itself or connects a tool. Claude Cowork requires an eligible Claude account and processes the files you choose to use for a task under your plan and settings.
 
 Start in Manual mode. Keep passwords, payment-card details, bank details, government IDs, health records, and private legal material out of the folder. Claude makes drafts and reports; you make every outside decision and take every outside action.
+
+Read `ADOPT-AI.md` after your first draft. It helps you choose one useful routine, prove that it works, and expand only when the saved evidence earns the next step.
 <!-- TUEL:OWNER-SETUP:END -->"""
 
 INTERVIEW_CONTROL_BLOCK = """<!-- TUEL:SETUP-CONTROLS:START -->
 ## Keep setup resumable
 
-Before the first question, read the full `CLAUDE.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+Before the first question, read the full `CLAUDE.md` and `ADOPT-AI.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+
+Ask which repeated job costs the owner time, how it works today, how often it happens, what a useful result looks like, and what mistake or missing input should stop the work. Draft one use-case card and adoption plan in `reports/`. Keep the routine in Manual mode at Assisted. Do not offer a repeating task until reviewed runs show useful results and the owner chooses to advance that exact routine.
+
+Treat proposed `business/` text as a memory proposal. Use `workflows/review-business-memory.md` for every write to approved business memory, and write only after the named owner freshly approves the exact proposed change.
 
 After each confirmed answer, update the setup status with what is complete, what is still missing, and the next single question. Never put passwords, payment details, government IDs, health records, or private legal material into the setup record.
 <!-- TUEL:SETUP-CONTROLS:END -->"""
@@ -122,6 +164,8 @@ CHECKLIST_CONTROL_BLOCK = """<!-- TUEL:CONTROL-CHECKLIST:START -->
 - List which files and connected tools Claude may read for routine work.
 - Choose how long temporary exports in `inbox/` should be kept. Claude may flag old files but never deletes them.
 - Name the accountant, lawyer, technician, or other qualified person who reviews work outside Claude's lane, when relevant.
+- Choose one repeated job for the first Assisted routine. Record how it works today, its approved sources, a useful result, and a stop signal.
+- Review saved evidence before advancing a routine. A stage change never authorizes sending, posting, paying, filing, signing, deciding, or deleting.
 <!-- TUEL:CONTROL-CHECKLIST:END -->"""
 
 SCHEDULE_PROMPT_PREAMBLE = """Read the full CLAUDE.md before doing anything. If it is unavailable, stop.
@@ -193,6 +237,22 @@ def transform_claude(text: str, safety: str) -> str:
             raise ValueError("CLAUDE.md has no Operating loop heading")
         text = text[: anchor.start()] + BUSINESS_OS_BLOCK + "\n\n" + text[anchor.start() :]
 
+    replaced = marked_replace(
+        text,
+        ADOPTION_BLOCK,
+        "<!-- TUEL:ADOPTION:START -->",
+        "<!-- TUEL:ADOPTION:END -->",
+    )
+    if replaced is not None:
+        text = replaced
+    else:
+        business_os_end = "<!-- TUEL:BUSINESS-OS:END -->"
+        anchor = text.find(business_os_end)
+        if anchor < 0:
+            raise ValueError("CLAUDE.md has no complete Business OS block")
+        insert_at = anchor + len(business_os_end)
+        text = text[:insert_at] + "\n\n" + ADOPTION_BLOCK + text[insert_at:]
+
     short_heading = re.search(r"(?mi)^## The short version\s*$", text)
     required = "Read the full CLAUDE.md before any work. If it is unavailable, stop and ask me."
     if short_heading:
@@ -222,6 +282,46 @@ def insert_marked_section(text: str, block: str, start: str, end: str) -> str:
     if not title:
         raise ValueError("Markdown file has no title")
     return normalize(text[: title.end()] + "\n\n" + block + text[title.end() :])
+
+
+def transform_interview(text: str) -> str:
+    text = insert_marked_section(
+        text,
+        INTERVIEW_CONTROL_BLOCK,
+        "<!-- TUEL:SETUP-CONTROLS:START -->",
+        "<!-- TUEL:SETUP-CONTROLS:END -->",
+    )
+    text = re.sub(
+        r"(?m)^## Part 3[^\n]*$",
+        "## Part 3: prove one routine before repeating it",
+        text,
+        count=1,
+    )
+    text = re.sub(
+        r"(?m)^Offer the two daily helpers one at a time, and wait for an answer between them\.$",
+        "Show the owner the two daily helpers as future options. Do not turn either one on during setup. First run the chosen routine manually and review the saved evidence against the adoption plan.",
+        text,
+        count=1,
+    )
+    text = re.sub(
+        r"(?m)^If yes, walk them through creating that scheduled task using the exact prompt in `schedules/morning-brief\.md`\. Then:$",
+        "If interested, run the exact prompt in `schedules/morning-brief.md` manually. Only after reviewed runs meet the owner's success and stop signals may the owner choose to set up that exact repeating task. Then:",
+        text,
+        count=1,
+    )
+    text = re.sub(
+        r"(?m)^If yes, same walk-through with `schedules/end-of-day\.md`\. If either is a no, no pressure[^\n]*$",
+        "If interested, treat `schedules/end-of-day.md` the same way: manual reviewed runs first, then an owner decision about that exact repeating task. If either is a no, leave it and move on.",
+        text,
+        count=1,
+    )
+    text = re.sub(
+        r"(?ms)^## Set up the daily rhythm\n\nLast step: offer to help turn on two small routines.*?(?=\n## |\Z)",
+        "## Prove one routine before repeating it\n\nAfter the first draft, create an adoption plan using `templates/ai-adoption-plan.md`. Run the chosen routine manually and review the evidence. Offer a repeating task only after reviewed runs meet the owner's success and stop signals and the owner chooses to advance that exact routine. A routine may stay Assisted for as long as the owner wants.\n",
+        text,
+        count=1,
+    )
+    return normalize(text)
 
 
 def move_marked_section_to_end(text: str, block: str, start: str, end: str) -> str:
@@ -316,22 +416,40 @@ def transform_connectors(text: str) -> str:
 
 
 def transform_manifest(text: str) -> str:
-    text = re.sub(r'(?m)^version:\s*["\']?[0-9]+\.[0-9]+\.[0-9]+["\']?\s*$', 'version: "1.0.0"', text, count=1)
+    def raise_blueprint_version(match: re.Match[str]) -> str:
+        current = tuple(int(part) for part in match.group(1).split("."))
+        minimum = tuple(int(part) for part in BLUEPRINT_VERSION.split("."))
+        chosen = match.group(1) if current >= minimum else BLUEPRINT_VERSION
+        return f'version: "{chosen}"'
+
+    text = re.sub(
+        r'(?m)^version:\s*["\']?([0-9]+\.[0-9]+\.[0-9]+)["\']?\s*$',
+        raise_blueprint_version,
+        text,
+        count=1,
+    )
+    metadata_keys = (
+        "standard_version",
+        "policy_version",
+        "data_layout_version",
+        "operating_profile",
+        "adoption_profile",
+        "platform_claims_checked_on",
+    )
+    for key in metadata_keys:
+        text = re.sub(rf"(?m)^{re.escape(key)}:.*\n?", "", text, count=1)
     metadata = (
-        'standard_version: "1.0.0"\n'
-        'policy_version: "1.0.0"\n'
-        'data_layout_version: "1.0.0"\n'
+        f'standard_version: "{STANDARD_VERSION}"\n'
+        f'policy_version: "{POLICY_VERSION}"\n'
+        f'data_layout_version: "{DATA_LAYOUT_VERSION}"\n'
         'operating_profile: draft-only-v1\n'
+        f'adoption_profile: {ADOPTION_PROFILE}\n'
         'platform_claims_checked_on: "2026-07-17"\n'
     )
-    if not re.search(r"(?m)^standard_version:", text):
-        version = re.search(r"(?m)^version:.*$", text)
-        if not version:
-            raise ValueError("manifest has no version")
-        text = text[: version.end()] + "\n" + metadata.rstrip() + text[version.end() :]
-
-    for key, additions in LIST_ADDITIONS.items():
-        text = ensure_list_values(text, key, additions)
+    version = re.search(r"(?m)^version:.*$", text)
+    if not version:
+        raise ValueError("manifest has no version")
+    text = text[: version.end()] + "\n" + metadata.rstrip() + text[version.end() :]
 
     if not re.search(r"(?m)^roles:", text):
         anchor = re.search(r"(?m)^connectors:", text)
@@ -339,6 +457,7 @@ def transform_manifest(text: str) -> str:
             "roles:\n"
             "  - operator\n"
             "  - reality-checker\n"
+            "  - adoption-guide\n"
             "protected_paths:\n"
             "  - business/\n"
             "  - assets/\n"
@@ -350,6 +469,17 @@ def transform_manifest(text: str) -> str:
             text = text[: anchor.start()] + insertion + text[anchor.start() :]
         else:
             text = text.rstrip() + "\n" + insertion + "connectors: []\n"
+
+    if not re.search(r"(?m)^adoption_guides:", text):
+        anchor = re.search(r"(?m)^connectors:", text)
+        insertion = "adoption_guides:\n  - use-case-map\n"
+        if anchor:
+            text = text[: anchor.start()] + insertion + text[anchor.start() :]
+        else:
+            text = text.rstrip() + "\n" + insertion + "connectors: []\n"
+
+    for key, additions in LIST_ADDITIONS.items():
+        text = ensure_list_values(text, key, additions)
 
     return transform_connectors(normalize(text))
 
@@ -371,11 +501,8 @@ def desired_files(target: Path, safety: str, contract: str) -> dict[Path, str]:
         "<!-- TUEL:OWNER-SETUP:START -->",
         "<!-- TUEL:OWNER-SETUP:END -->",
     )
-    desired[target / "onboarding" / "interview.md"] = insert_marked_section(
-        (target / "onboarding" / "interview.md").read_text(encoding="utf-8"),
-        INTERVIEW_CONTROL_BLOCK,
-        "<!-- TUEL:SETUP-CONTROLS:START -->",
-        "<!-- TUEL:SETUP-CONTROLS:END -->",
+    desired[target / "onboarding" / "interview.md"] = transform_interview(
+        (target / "onboarding" / "interview.md").read_text(encoding="utf-8")
     )
     desired[target / "onboarding" / "checklist.md"] = insert_marked_section(
         (target / "onboarding" / "checklist.md").read_text(encoding="utf-8"),
@@ -384,9 +511,13 @@ def desired_files(target: Path, safety: str, contract: str) -> dict[Path, str]:
         "<!-- TUEL:CONTROL-CHECKLIST:END -->",
     )
 
-    core_schedule = target / "schedules" / "weekly-operations-review.md"
+    core_schedules = {
+        target / relative
+        for relative in CORE_FILES
+        if relative.startswith("schedules/")
+    }
     for schedule in sorted((target / "schedules").glob("*.md")):
-        if schedule == core_schedule:
+        if schedule in core_schedules:
             continue
         desired[schedule] = transform_schedule(schedule.read_text(encoding="utf-8"), contract)
     return desired

@@ -1,8 +1,10 @@
 # Roadmap
 
-`salon` shipped first and set the bar. The first wave of 18 more main-street verticals followed: cafe, bakery, restaurant, bar, food-truck, boutique, florist, gym, pet-groomer, tattoo-studio, photographer, event-planner, tutoring-studio, cleaning-service, lawn-care, plumber, handyman, and auto-repair. Every one is structurally checked against Blueprint Standard 1.0.0 and carries its own "know your lane" boundary pack. Structural validation is not owner or domain review.
+`salon` shipped first and set the bar. The first wave of 18 more main-street verticals followed: cafe, bakery, restaurant, bar, food-truck, boutique, florist, gym, pet-groomer, tattoo-studio, photographer, event-planner, tutoring-studio, cleaning-service, lawn-care, plumber, handyman, and auto-repair. Every one is structurally checked against Blueprint Standard 1.1.0 and carries its own "know your lane" boundary pack. Structural validation is not owner or domain review.
 
-Business OS v1 now gives all 19 folders the same safety floor, operating loop, role guides, review skill, decision and receipt templates, incident handling, reviewed-memory process, protected workspace layout, and weekly operations schedule.
+Business OS v1.1 now gives all 19 folders the same safety floor, operating loop, role guides, review skill, decision and receipt templates, incident handling, reviewed-memory process, protected workspace layout, and weekly operations schedule. It also adds a readiness gate and four-stage adoption path for each routine: Assisted, Repeatable, Supervised operations, and Intent-led Business OS.
+
+Every vertical now has its own use-case map. The next product-learning priority is owner scenario testing: first useful draft, manual pilot, isolated work packets, routine advancement, source drift, pause and rollback, monthly value review, and a Stage 4 exception brief that still takes no outside action.
 
 ## Selection criteria for the next vertical
 

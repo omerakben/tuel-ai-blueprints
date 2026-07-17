@@ -1,10 +1,11 @@
 name: Tutoring studio
 slug: tutoring-studio
-version: "1.0.0"
-standard_version: "1.0.0"
+version: "1.1.0"
+standard_version: "1.1.0"
 policy_version: "1.0.0"
 data_layout_version: "1.0.0"
 operating_profile: draft-only-v1
+adoption_profile: routine-evidence-v1
 platform_claims_checked_on: "2026-07-17"
 business_type: tutoring studio
 summary: A ready-to-run assistant for your tutoring studio. It answers parent inquiries, drafts session options and recap notes, and nudges unpaid invoices, always showing you drafts first.
@@ -16,17 +17,20 @@ skills:
   - draft-an-invoice-reminder
   - draft-a-slot-fill-note
   - review-the-work
+  - find-next-ai-use-case
 schedules:
   - morning-brief
   - end-of-day
   - slot-fill
   - weekly-operations-review
+  - monthly-ai-adoption-review
 workflows:
   - weekly-schedule
   - monthly-books
   - verify-a-draft
   - review-business-memory
   - handle-an-incident
+  - advance-ai-adoption
 templates:
   - inquiry-reply
   - recap-note
@@ -38,6 +42,10 @@ templates:
   - memory-proposal
   - incident-record
   - weekly-operations-review
+  - ai-adoption-plan
+  - ai-use-case-card
+  - ai-value-review
+  - exception-brief
 memory_files:
   - profile
   - services
@@ -49,12 +57,15 @@ memory_files:
 roles:
   - operator
   - reality-checker
+  - adoption-guide
 protected_paths:
   - business/
   - assets/
   - reports/
   - operations/
   - inbox/
+adoption_guides:
+  - use-case-map
 connectors:
   - name: Gmail
     why: Reply drafts for parent emails land ready to send. You still press send.

@@ -3,7 +3,11 @@
 <!-- TUEL:SETUP-CONTROLS:START -->
 ## Keep setup resumable
 
-Before the first question, read the full `CLAUDE.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+Before the first question, read the full `CLAUDE.md` and `ADOPT-AI.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+
+Ask which repeated job costs the owner time, how it works today, how often it happens, what a useful result looks like, and what mistake or missing input should stop the work. Draft one use-case card and adoption plan in `reports/`. Keep the routine in Manual mode at Assisted. Do not offer a repeating task until reviewed runs show useful results and the owner chooses to advance that exact routine.
+
+Treat proposed `business/` text as a memory proposal. Use `workflows/review-business-memory.md` for every write to approved business memory, and write only after the named owner freshly approves the exact proposed change.
 
 After each confirmed answer, update the setup status with what is complete, what is still missing, and the next single question. Never put passwords, payment details, government IDs, health records, or private legal material into the setup record.
 <!-- TUEL:SETUP-CONTROLS:END -->
@@ -53,19 +57,19 @@ Right away, same session:
 
 The session must not end without something real in `reports/` that the owner can use today.
 
-## Part 3 — switching on the rhythm
+## Part 3: prove one routine before repeating it
 
-Offer the two daily helpers one at a time, and wait for an answer between them.
+Show the owner the two daily helpers as future options. Do not turn either one on during setup. First run the chosen routine manually and review the saved evidence against the adoption plan.
 
 First:
 
 > Want a two-minute morning brief before you head out — today's jobs in driving order, who's on what, anything to bring?
 
-If yes, walk them through creating that scheduled task using the exact prompt in `schedules/morning-brief.md`. Then:
+If interested, run the exact prompt in `schedules/morning-brief.md` manually. Only after reviewed runs meet the owner's success and stop signals may the owner choose to set up that exact repeating task. Then:
 
 > And a close-out at the end of the day — what got done, what got paid, what's still owed — so nothing nags at you overnight?
 
-If yes, same walk-through with `schedules/end-of-day.md`. If either is a no, no pressure — they can just ask any morning or evening.
+If interested, treat `schedules/end-of-day.md` the same way: manual reviewed runs first, then an owner decision about that exact repeating task. If either is a no, leave it and move on.
 
 Also offer, once:
 

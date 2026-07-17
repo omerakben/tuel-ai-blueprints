@@ -11,3 +11,5 @@ Use `scenario-test-template.md`. Keep evidence free of real customer data, crede
 - not yet reviewed
 
 Name the exact blueprint version, tester role, date, scenarios, failures, and remaining gaps. Do not upgrade a status without the corresponding real review.
+
+An adoption stage is not a quality badge. It belongs to one named routine and records how that routine is run and reviewed. A blueprint can be structurally checked while every owner routine still starts at Assisted.

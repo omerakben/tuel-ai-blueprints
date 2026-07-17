@@ -8,7 +8,7 @@ This page records the platform facts that shape TUEL AI blueprints. It is not a 
 
 - Cowork requires an eligible paid Claude plan. Tasks run on Anthropic infrastructure, while local file and browser work requires Claude Desktop to remain open.
 - Cowork sessions and files are saved to the owner's Claude account. The original working folder remains under the owner's control, but files selected for a task are processed by Claude. A blueprint must never promise "no upload" or "never leaves this computer."
-- Cowork offers Manual, Auto, and Skip permission modes. TUEL recommends Manual for setup, new connections, sensitive sources, and anything with write capability. Auto is appropriate only for reviewed action-level A or B work. TUEL blueprints never recommend Skip.
+- Cowork offers Manual, Auto, and Skip permission modes. TUEL recommends Manual for setup, new or changed routines, new connections, sensitive sources, and anything with write capability. Auto may be considered only for the exact named action-level A or B routine after saved reviewed runs meet the owner's success and stop signals. TUEL blueprints never recommend Skip.
 - Folder instructions and project instructions can help behavior persist between chats. They do not turn a folder into a plugin, Skill package, installed agent, or imported schedule.
 
 Official sources:
@@ -19,7 +19,7 @@ Official sources:
 
 ## Scheduled work
 
-Schedule files in a blueprint are copy-and-paste recipes. They are not imported automatically. If the scheduling screen offers a folder field, choose the business folder. A task that needs local files requires Claude Desktop and the folder to be available. If those conditions are not met, run the prompt manually. A recipe must report missing or stale input and must never guess, overwrite a previous run, or perform an external action.
+Schedule files in a blueprint are copy-and-paste recipes. They are not imported automatically. Built-in scheduled tasks can run remotely with connected tools and files saved to the owner's Claude account. They cannot read or write this downloaded working folder while the owner's computer is unavailable. If the scheduling screen offers a folder field, choose the business folder; a task that needs those local files runs locally and requires Claude Desktop and the folder to be available. If those conditions are not met, run the prompt manually. A recipe must report missing or stale input and must never guess, overwrite a previous run, or perform an outside action.
 
 ## Connections
 

@@ -1,10 +1,11 @@
 name: Plumber
 slug: plumber
-version: "1.0.0"
-standard_version: "1.0.0"
+version: "1.1.0"
+standard_version: "1.1.0"
 policy_version: "1.0.0"
 data_layout_version: "1.0.0"
 operating_profile: draft-only-v1
+adoption_profile: routine-evidence-v1
 platform_claims_checked_on: "2026-07-17"
 business_type: plumbing business
 summary: A ready-to-run assistant for your plumbing business. It drafts estimates, replies to service requests, plans your week, and nudges unpaid invoices, always showing you drafts first.
@@ -16,17 +17,20 @@ skills:
   - plan-the-week
   - draft-an-invoice-reminder
   - review-the-work
+  - find-next-ai-use-case
 schedules:
   - morning-brief
   - end-of-day
   - estimate-chase
   - weekly-operations-review
+  - monthly-ai-adoption-review
 workflows:
   - weekly-jobs
   - monthly-books
   - verify-a-draft
   - review-business-memory
   - handle-an-incident
+  - advance-ai-adoption
 templates:
   - estimate
   - service-reply
@@ -38,6 +42,10 @@ templates:
   - memory-proposal
   - incident-record
   - weekly-operations-review
+  - ai-adoption-plan
+  - ai-use-case-card
+  - ai-value-review
+  - exception-brief
 memory_files:
   - profile
   - services
@@ -49,12 +57,15 @@ memory_files:
 roles:
   - operator
   - reality-checker
+  - adoption-guide
 protected_paths:
   - business/
   - assets/
   - reports/
   - operations/
   - inbox/
+adoption_guides:
+  - use-case-map
 connectors:
   - name: Gmail
     why: Estimate and reply drafts land ready to send — you still press send.

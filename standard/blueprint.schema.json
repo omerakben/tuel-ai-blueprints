@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://tuel.ai/standard/blueprint.schema.json",
   "title": "TUEL Blueprint Manifest",
-  "description": "Manifest contract for a TUEL Blueprint Standard 1.0 working folder. Claude does not read this file as instructions. tools/lint.py also enforces file-level, safety, drift, and package rules that JSON Schema cannot express.",
+  "description": "Manifest contract for a TUEL Blueprint Standard 1.1 working folder. Claude does not read this file as instructions. tools/lint.py also enforces file-level, safety, adoption, drift, and package rules that JSON Schema cannot express.",
   "type": "object",
   "required": [
     "name",
@@ -12,6 +12,7 @@
     "policy_version",
     "data_layout_version",
     "operating_profile",
+    "adoption_profile",
     "platform_claims_checked_on",
     "business_type",
     "summary",
@@ -21,6 +22,7 @@
     "templates",
     "memory_files",
     "roles",
+    "adoption_guides",
     "protected_paths",
     "connectors"
   ],
@@ -42,7 +44,7 @@
       "description": "Blueprint semantic version. Approval, authority, safety, retention, protected-path, or memory-layout changes require a major version."
     },
     "standard_version": {
-      "enum": ["1.0.0"],
+      "enum": ["1.1.0"],
       "description": "TUEL Blueprint Standard implemented by this package."
     },
     "policy_version": {
@@ -56,6 +58,10 @@
     "operating_profile": {
       "enum": ["draft-only-v1"],
       "description": "Maximum unattended operating profile. Scheduled work is observe or local draft only."
+    },
+    "adoption_profile": {
+      "enum": ["routine-evidence-v1"],
+      "description": "Routine-level adoption model. New or changed routines start in Manual mode and advance only through saved evidence plus an owner decision. Adoption stage never expands action authority."
     },
     "platform_claims_checked_on": {
       "type": "string",
@@ -80,28 +86,28 @@
     },
     "skills": {
       "type": "array",
-      "minItems": 4,
+      "minItems": 5,
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/slugRef" },
-      "description": "Each entry has a matching skills/<slug>/SKILL.md. review-the-work is required by tools/lint.py."
+      "description": "Each entry has a matching skills/<slug>/SKILL.md. The review and next-use-case playbooks are required by tools/lint.py."
     },
     "schedules": {
       "type": "array",
-      "minItems": 3,
+      "minItems": 4,
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/slugRef" },
-      "description": "Each entry has a matching schedules/<slug>.md. weekly-operations-review is required by tools/lint.py."
+      "description": "Each entry has a matching schedules/<slug>.md. The weekly operations and monthly adoption reviews are required by tools/lint.py."
     },
     "workflows": {
       "type": "array",
-      "minItems": 3,
+      "minItems": 4,
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/slugRef" },
       "description": "Each entry has a matching workflows/<slug>.md. Standard-owned core workflows are required by tools/lint.py."
     },
     "templates": {
       "type": "array",
-      "minItems": 6,
+      "minItems": 10,
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/slugRef" },
       "description": "Each entry has a matching templates/<slug>.md. Standard-owned operational record templates are required by tools/lint.py."
@@ -115,10 +121,17 @@
     },
     "roles": {
       "type": "array",
-      "minItems": 2,
+      "minItems": 3,
       "uniqueItems": true,
       "items": { "$ref": "#/$defs/slugRef" },
       "description": "Ordinary Markdown role guides in roles/. These register nothing and grant no access."
+    },
+    "adoption_guides": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": { "$ref": "#/$defs/slugRef" },
+      "description": "Owner-facing business-specific adoption maps in adoption/. Each map covers readiness plus all four routine stages without changing action authority."
     },
     "protected_paths": {
       "type": "array",

@@ -2,11 +2,12 @@
 # rules in standard/. Claude Desktop does not read it.
 name: "{{NAME}}"
 slug: _blank # TODO: after copying, set this to the blueprint folder name, e.g. salon
-version: "1.0.0"
-standard_version: "1.0.0"
+version: "1.1.0"
+standard_version: "1.1.0"
 policy_version: "1.0.0"
 data_layout_version: "1.0.0"
 operating_profile: draft-only-v1
+adoption_profile: routine-evidence-v1
 platform_claims_checked_on: "2026-07-17"
 business_type: "{{BUSINESS_TYPE}}"
 summary: "A ready-to-open business folder that helps you run {{NAME}} day to day — Claude drafts, you approve."
@@ -16,15 +17,18 @@ skills:
   - draft-a-promo
   - close-the-day
   - review-the-work
+  - find-next-ai-use-case
 schedules:
   - morning-brief
   - end-of-day
   - weekly-operations-review
+  - monthly-ai-adoption-review
 workflows:
   - weekly-review
   - verify-a-draft
   - review-business-memory
   - handle-an-incident
+  - advance-ai-adoption
 templates:
   - weekly-report
   - operations-board
@@ -33,6 +37,10 @@ templates:
   - memory-proposal
   - incident-record
   - weekly-operations-review
+  - ai-adoption-plan
+  - ai-use-case-card
+  - ai-value-review
+  - exception-brief
 memory_files:
   - profile
   - services
@@ -44,10 +52,13 @@ memory_files:
 roles:
   - operator
   - reality-checker
+  - adoption-guide
 protected_paths:
   - business/
   - assets/
   - reports/
   - operations/
   - inbox/
+adoption_guides:
+  - use-case-map
 connectors: []

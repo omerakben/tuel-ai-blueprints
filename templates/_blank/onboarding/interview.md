@@ -3,7 +3,11 @@
 <!-- TUEL:SETUP-CONTROLS:START -->
 ## Keep setup resumable
 
-Before the first question, read the full `CLAUDE.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+Before the first question, read the full `CLAUDE.md` and `ADOPT-AI.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+
+Ask which repeated job costs the owner time, how it works today, how often it happens, what a useful result looks like, and what mistake or missing input should stop the work. Draft one use-case card and adoption plan in `reports/`. Keep the routine in Manual mode at Assisted. Do not offer a repeating task until reviewed runs show useful results and the owner chooses to advance that exact routine.
+
+Treat proposed `business/` text as a memory proposal. Use `workflows/review-business-memory.md` for every write to approved business memory, and write only after the named owner freshly approves the exact proposed change.
 
 After each confirmed answer, update the setup status with what is complete, what is still missing, and the next single question. Never put passwords, payment details, government IDs, health records, or private legal material into the setup record.
 <!-- TUEL:SETUP-CONTROLS:END -->
@@ -51,9 +55,9 @@ Before the first chat ends, make something real. Offer a choice and let the owne
 
 Make it, show the draft, take corrections, and save the approved version to reports/. Then say plainly: this is the kind of thing Claude can do every day from now on.
 
-## Set up the daily rhythm
+## Prove one routine before repeating it
 
-Last step: offer to help turn on two small routines — a morning brief and an end-of-day close. Explain in plain words what each one does, then walk the owner through schedules/morning-brief.md and schedules/end-of-day.md. Both make drafts only; nothing is ever sent. If the owner is not interested yet, leave it cheerfully and move on.
+After the first draft, create an adoption plan using `templates/ai-adoption-plan.md`. Run the chosen routine manually and review the evidence. Offer a repeating task only after reviewed runs meet the owner's success and stop signals and the owner chooses to advance that exact routine. A routine may stay Assisted for as long as the owner wants.
 
 ## If the owner stops early
 

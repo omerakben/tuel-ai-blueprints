@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.1.0 - 2026-07-17
+
+### Added
+
+- A readiness gate and four-stage adoption path for each routine: Assisted, Repeatable, Supervised operations, and Intent-led Business OS.
+- Owner-facing adoption guides, business-specific use-case maps, adoption plans, use-case cards, value reviews, exception briefs, and an adoption-guide role.
+- A playbook for finding the next useful AI job, an evidence-based advancement workflow, and a monthly adoption review recipe.
+- Isolated work-packet fields so one blocked item cannot disappear into a batch or contaminate ready work.
+- Manifest and linter enforcement for the routine evidence profile and adoption-map completeness.
+
+### Changed
+
+- New and materially changed routines now start in Manual mode and advance only through saved evidence plus an owner decision.
+- Onboarding now pilots one repeated job before offering any repeating task.
+- The public storefront now explains the four-step path and makes clear that owners may stay at any stage.
+- Standard version is 1.1.0. Safety policy, protected data layout, and the draft-only unattended ceiling remain at 1.0.0.
+
+### Upgrade note
+
+This is an additive capability upgrade. Review the new adoption files and onboarding behavior, then merge capability files without overwriting `business/`, `assets/`, `reports/`, `operations/`, or `inbox/`.
+
 ## 1.0.0 - 2026-07-17
 
 ### Added

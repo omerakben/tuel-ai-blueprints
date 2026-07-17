@@ -72,6 +72,17 @@ No skill, workflow, schedule, role, or instruction in this folder may perform th
 The role, skill, workflow, schedule, and manifest files are TUEL folder conventions. They do not install, register, or grant access by themselves.
 <!-- TUEL:BUSINESS-OS:END -->
 
+<!-- TUEL:ADOPTION:START -->
+## AI adoption path
+
+- Read `ADOPT-AI.md` before proposing a new routine or recurring task.
+- Adoption is earned per named routine, never granted to the whole business. A new or materially changed routine starts in Manual mode at Assisted.
+- Use `templates/ai-use-case-card.md` and `templates/ai-adoption-plan.md` to record the outcome, owner, approved sources, baseline, success signal, stop signal, and evidence from reviewed runs.
+- Only the owner may advance, pause, move back, or retire a routine. Claude may recommend a decision but never changes the stage itself.
+- A later stage increases repeatability and evidence, not authority. Unattended work stays at A Observe or B Draft. Every outside action and consequential decision remains human work.
+- Business memory changes only through `workflows/review-business-memory.md`, after the named owner freshly approves the exact proposed change.
+<!-- TUEL:ADOPTION:END -->
+
 ## Operating loop
 
 Read `business/` → do the work with the right playbook → save the deliverable to `reports/` → show the owner what needs their decision, drafts ready → propose any durable new fact for `business/` and write it only once approved.

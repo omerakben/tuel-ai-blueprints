@@ -23,6 +23,10 @@ TUEL AI writes for people who run real businesses with their hands and their wee
 | skill | playbook |
 | schedule | the morning brief, the end-of-day close |
 | connector recommendation | tools you can connect (all optional) |
+| adoption maturity | the current step for this routine |
+| parallel agents | separate jobs or work packets |
+| supervised autonomy | supervised operations |
+| AI-native | intent-led Business OS |
 
 ## The test
 

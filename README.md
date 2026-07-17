@@ -10,7 +10,7 @@ A blueprint is a ready-to-operate folder for one kind of small business. Open it
 
 1. **Download** the folder for your kind of business from the catalog below.
 2. **Open it** in Claude Desktop and say hello. Claude asks a few plain questions, one at a time, and aims to end the first session with a useful business profile and a ready-to-review draft.
-3. **Let it run.** Turn on the morning brief and the end-of-day close. From then on Claude drafts, tallies, reminds, and watches the stock. You decide.
+3. **Prove one routine.** Start with one repeated job in Manual mode. Review the drafts, measure whether they help, and turn on a repeating task only after the saved evidence earns your trust.
 
 Everything is draft-first: nothing is sent, posted, paid, or promised without your fresh okay on that exact item.
 
@@ -24,8 +24,20 @@ TUEL Business OS v1 gives every business the same dependable control layer:
 - work receipts that show what was read, produced, left uncertain, and sent to the owner for a decision
 - decision, incident, weekly review, and business-memory proposal templates
 - morning, end-of-day, and weekly schedule recipes that stop at observing or drafting
+- a four-stage adoption path, a business-specific use-case map, and records for choosing, proving, advancing, pausing, or retiring one routine at a time
 
 These are ordinary files Claude reads. They do not install agents, turn on schedules, or grant access. Claude can handle reviewed reading, organizing, calculation, reconciliation, drafting, and local reporting. The owner still performs every send, post, payment, filing, commitment, access change, and deletion.
+
+## Four steps to adopt AI without losing control
+
+Readiness comes first. Name one repeated job, its owner, the sources Claude may use, what a useful result looks like, and what should stop the work.
+
+1. **Assisted.** Work with Claude on one routine and review the whole result.
+2. **Repeatable.** Run several bounded jobs as separate work packets, each with its own sources, check, and decision.
+3. **Supervised operations.** Turn a proven observing or drafting routine into an owner-enabled repeating task, with saved reports and visible failures.
+4. **Intent-led Business OS.** Steer a proven group of routines by outcome, review value and exceptions, and pause work that no longer earns its place.
+
+Adoption is measured per routine, not per business. You can keep one job at Assisted and another at Supervised operations. You may stay at any stage. A later stage improves repeatability and review; it never gives Claude permission to take a real-world action.
 
 ## Catalog
 
@@ -72,7 +84,7 @@ A blueprint is operational help, not professional advice. Month-end summaries go
 
 ## For builders
 
-- `standard/SPEC.md` is the blueprint standard; `standard/blueprint.schema.json` is the manifest contract.
+- `standard/SPEC.md` is Blueprint Standard 1.1; `standard/blueprint.schema.json` is the manifest contract.
 - `templates/_blank/` is the scaffold. Start a new vertical with `python tools/create_blueprint.py <slug> --name "..." --business-type "..."`.
 - `python tools/lint.py --strict` checks every blueprint; CI runs it on each pull request.
 - `docs/` contains the vision, brand voice, platform fact record, and upgrade guide. `CONTRIBUTING.md` explains how to add a vertical.

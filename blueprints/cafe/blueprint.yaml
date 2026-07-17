@@ -1,10 +1,11 @@
 name: Cafe
 slug: cafe
-version: "1.0.0"
-standard_version: "1.0.0"
+version: "1.1.0"
+standard_version: "1.1.0"
 policy_version: "1.0.0"
 data_layout_version: "1.0.0"
 operating_profile: draft-only-v1
+adoption_profile: routine-evidence-v1
 platform_claims_checked_on: "2026-07-17"
 business_type: neighborhood cafe
 summary: A ready-to-run assistant for your cafe. It drafts your daily special post, builds restock lists, closes out the till, and preps review replies, always showing you drafts first.
@@ -16,17 +17,20 @@ skills:
   - draft-a-review-reply
   - plan-shifts
   - review-the-work
+  - find-next-ai-use-case
 schedules:
   - morning-brief
   - end-of-day
   - quiet-morning-promo
   - weekly-operations-review
+  - monthly-ai-adoption-review
 workflows:
   - weekly-specials
   - monthly-books
   - verify-a-draft
   - review-business-memory
   - handle-an-incident
+  - advance-ai-adoption
 templates:
   - special-post
   - shift-note
@@ -38,6 +42,10 @@ templates:
   - memory-proposal
   - incident-record
   - weekly-operations-review
+  - ai-adoption-plan
+  - ai-use-case-card
+  - ai-value-review
+  - exception-brief
 memory_files:
   - profile
   - services
@@ -49,12 +57,15 @@ memory_files:
 roles:
   - operator
   - reality-checker
+  - adoption-guide
 protected_paths:
   - business/
   - assets/
   - reports/
   - operations/
   - inbox/
+adoption_guides:
+  - use-case-map
 connectors:
   - name: Gmail
     why: Supplier order drafts and reply drafts land ready to send. You still press send.

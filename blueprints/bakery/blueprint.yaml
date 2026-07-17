@@ -1,10 +1,11 @@
 name: Bakery
 slug: bakery
-version: "1.0.0"
-standard_version: "1.0.0"
+version: "1.1.0"
+standard_version: "1.1.0"
 policy_version: "1.0.0"
 data_layout_version: "1.0.0"
 operating_profile: draft-only-v1
+adoption_profile: routine-evidence-v1
 platform_claims_checked_on: "2026-07-17"
 business_type: bakery & pastry shop
 summary: A ready-to-run assistant for your bakery. It drafts custom order replies, proposes the bake list, preps supplier orders, and closes out the day, always showing you drafts first.
@@ -16,17 +17,20 @@ skills:
   - prepare-an-ingredient-order
   - close-the-day
   - review-the-work
+  - find-next-ai-use-case
 schedules:
   - morning-brief
   - end-of-day
   - weekend-preorder-push
   - weekly-operations-review
+  - monthly-ai-adoption-review
 workflows:
   - weekly-production
   - monthly-books
   - verify-a-draft
   - review-business-memory
   - handle-an-incident
+  - advance-ai-adoption
 templates:
   - bake-post
   - custom-order-form
@@ -38,6 +42,10 @@ templates:
   - memory-proposal
   - incident-record
   - weekly-operations-review
+  - ai-adoption-plan
+  - ai-use-case-card
+  - ai-value-review
+  - exception-brief
 memory_files:
   - profile
   - services
@@ -49,12 +57,15 @@ memory_files:
 roles:
   - operator
   - reality-checker
+  - adoption-guide
 protected_paths:
   - business/
   - assets/
   - reports/
   - operations/
   - inbox/
+adoption_guides:
+  - use-case-map
 connectors:
   - name: Gmail
     why: Reply drafts for custom order emails land ready to send. You still press send.

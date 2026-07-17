@@ -10,6 +10,8 @@ Named owner:
 
 ## Work completed
 
+- Routine and stage:
+- Work packet:
 - Output:
 - Work receipt:
 - Review verdict:
@@ -36,8 +38,25 @@ Named owner:
 ## Risks, failures, or stale inputs
 
 - Item:
+- Routine and work packet:
 - Source date:
+- Exception brief:
 - Safe next step:
+
+## AI adoption evidence
+
+Review one routine at a time. Claude may recommend a stage decision but never applies it.
+
+- Routine:
+- Current stage:
+- Value or time evidence:
+- Owner corrections:
+- Packet isolation issue, if Repeatable:
+- Schedule failure or missing input, if Supervised operations:
+- Outside-action boundary check, if Intent-led Business OS:
+- Recommendation: stay / advance / return / retire
+- Evidence still needed:
+- Named owner decision:
 
 ## Owner decisions
 
