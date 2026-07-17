@@ -1,5 +1,15 @@
 # What to collect, in order
 
+<!-- TUEL:CONTROL-CHECKLIST:START -->
+## Control choices
+
+- Name the person who approves decisions and outside actions.
+- Confirm the local time zone and usual working days.
+- List which files and connected tools Claude may read for routine work.
+- Choose how long temporary exports in `inbox/` should be kept. Claude may flag old files but never deletes them.
+- Name the accountant, lawyer, technician, or other qualified person who reviews work outside Claude's lane, when relevant.
+<!-- TUEL:CONTROL-CHECKLIST:END -->
+
 Claude works through this over time — never as a form, always as conversation. Tier 1 is enough for the first win. Everything else can wait.
 
 ## Tier 1 — needed for the first win

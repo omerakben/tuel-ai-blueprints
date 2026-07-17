@@ -2,7 +2,7 @@
 
 Your first win needs none of this. Claude works from this folder and what you tell it. Connect things later, and only if they save you time.
 
-Every connection starts read-only: Claude can look things up, but it changes nothing without you.
+A connected tool may be able to change records as well as read them. Start in Manual mode, review what the tool can do, and keep this folder draft-only. You still perform every outside action.
 
 ## Gmail
 

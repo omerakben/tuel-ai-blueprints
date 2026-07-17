@@ -23,7 +23,8 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install pyyaml
-      - run: python tools/lint.py
+      - run: python tools/sync_business_os.py --check
+      - run: python tools/lint.py --strict
       - run: python tools/build_site.py
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

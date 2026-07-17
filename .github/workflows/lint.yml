@@ -15,4 +15,5 @@ jobs:
           python-version: "3.12"
       - run: pip install pyyaml
       - run: python tools/lint.py --self-test
-      - run: python tools/lint.py
+      - run: python tools/sync_business_os.py --check
+      - run: python tools/lint.py --strict

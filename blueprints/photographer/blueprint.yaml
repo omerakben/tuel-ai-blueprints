@@ -1,6 +1,11 @@
 name: Photographer
 slug: photographer
-version: 0.1.0
+version: "1.0.0"
+standard_version: "1.0.0"
+policy_version: "1.0.0"
+data_layout_version: "1.0.0"
+operating_profile: draft-only-v1
+platform_claims_checked_on: "2026-07-17"
 business_type: photography business
 summary: A ready-to-run assistant for your photography business. It drafts inquiry replies, booking proposals, shoot briefs, and captions for your recent work, always showing you drafts first.
 language: en
@@ -10,18 +15,29 @@ skills:
   - prepare-a-shoot-brief
   - draft-a-rebooking-note
   - draft-a-recent-work-post
+  - review-the-work
 schedules:
   - morning-brief
   - end-of-day
   - inquiry-sweep
+  - weekly-operations-review
 workflows:
   - weekly-marketing
   - monthly-books
+  - verify-a-draft
+  - review-business-memory
+  - handle-an-incident
 templates:
   - inquiry-reply
   - booking-proposal
   - shoot-brief
   - promo-post
+  - operations-board
+  - work-receipt
+  - decision-record
+  - memory-proposal
+  - incident-record
+  - weekly-operations-review
 memory_files:
   - profile
   - services
@@ -30,16 +46,43 @@ memory_files:
   - suppliers
   - policies
   - brand
+roles:
+  - operator
+  - reality-checker
+protected_paths:
+  - business/
+  - assets/
+  - reports/
+  - operations/
+  - inbox/
 connectors:
   - name: Gmail
     why: Reply drafts for inquiries land ready to send. You still press send.
     status: confirmed-official-example
+    access: read-write
+    use_policy: draft-only-use
+    official_url: "https://support.claude.com/en/articles/10166901-use-google-workspace-connectors"
+    fallback: "Paste or export only the messages needed for this task."
+    verified_on: "2026-07-17"
   - name: Square
     why: The month-end tidy-up can add itself up from deposits and payments instead of you reading numbers out.
     status: confirmed-official-example
+    access: read-write
+    use_policy: read-only-use
+    official_url: "https://claude.com/connectors/square"
+    fallback: "Export the dated sales or payment summary and place it in inbox/."
+    verified_on: "2026-07-17"
   - name: Google Business Profile
     why: Keep hours and services current, with review replies prepared for your yes. Posting stays your move.
     status: candidate-remote-mcp
+    access: varies
+    use_policy: draft-only-use
+    fallback: "Paste the listing details or reviews needed for the draft."
+    verified_on: "2026-07-17"
   - name: Instagram & Facebook
     why: No connection needed — Claude drafts your captions; you paste and post when you're happy.
     status: local-or-export-fallback
+    access: none
+    use_policy: not-connected
+    fallback: "Copy an owner-approved draft into the social app yourself."
+    verified_on: "2026-07-17"

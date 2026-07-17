@@ -1,5 +1,13 @@
 # Your first chat: getting to know {{NAME}}
 
+<!-- TUEL:SETUP-CONTROLS:START -->
+## Keep setup resumable
+
+Before the first question, read the full `CLAUDE.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+
+After each confirmed answer, update the setup status with what is complete, what is still missing, and the next single question. Never put passwords, payment details, government IDs, health records, or private legal material into the setup record.
+<!-- TUEL:SETUP-CONTROLS:END -->
+
 This is the script Claude follows the first time you say hello. You do not need to read it — just open this folder in Claude Desktop and start talking. Claude, the rest of this file is for you.
 
 ## How to run this interview

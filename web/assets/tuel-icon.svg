@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 600">
+  <defs>
+    <linearGradient id="icon-road-left" x1="193.3" y1="573.81" x2="193.3" y2="292.07" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#238455"/>
+      <stop offset="1" stop-color="#6ad385"/>
+    </linearGradient>
+    <linearGradient id="icon-road-right" x1="406.7" y1="573.81" x2="406.7" y2="292.07" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#238455"/>
+      <stop offset="1" stop-color="#6ad385"/>
+    </linearGradient>
+    <linearGradient id="icon-road-center" x1="299.81" y1="573.81" x2="299.81" y2="290.62" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#238455"/>
+      <stop offset="1" stop-color="#6ad385"/>
+    </linearGradient>
+    <linearGradient id="icon-ring-outer" x1="47.02" y1="238.97" x2="552.98" y2="238.97" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#125d3e"/>
+      <stop offset="1" stop-color="#44a766"/>
+    </linearGradient>
+    <linearGradient id="icon-ring-inner" x1="157.03" y1="251.34" x2="442.97" y2="251.34" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#125d3e"/>
+      <stop offset="1" stop-color="#44a766"/>
+    </linearGradient>
+  </defs>
+  <g>
+    <polygon fill="url(#icon-road-left)" points="292.12 292.07 149.53 573.81 148.67 573.81 94.48 573.81 292.12 292.07"/>
+    <polygon fill="url(#icon-road-right)" points="307.88 292.07 450.47 573.81 504.66 573.81 505.52 573.81 307.88 292.07"/>
+    <polygon fill="url(#icon-road-center)" points="196.4 573.81 403.21 573.81 299.76 290.62 196.4 573.81"/>
+  </g>
+  <path fill="url(#icon-ring-outer)" d="M479.85,99.32c-47.16-47.16-109.86-73.13-176.56-73.13-1.1,0-2.19.03-3.29.04-1.1-.01-2.19-.04-3.29-.04-66.7,0-129.4,25.97-176.56,73.13-47.16,47.16-73.13,109.86-73.13,176.56s25.73,128.79,72.47,175.88l49.56-52.01c-31.12-32.06-50.31-75.76-50.31-123.87,0-98.14,79.84-177.97,177.98-177.97,1.1,0,2.19.02,3.28.04h0s0,0,0,0h0c1.09-.02,2.19-.04,3.28-.04,98.14,0,177.97,79.84,177.97,177.97,0,48.11-19.19,91.81-50.31,123.87l49.56,52.01c46.73-47.08,72.47-109.5,72.47-175.88s-25.97-129.4-73.13-176.56Z"/>
+  <path fill="url(#icon-ring-inner)" d="M401.64,172.42c-26.65-26.65-62.09-41.33-99.78-41.33-.62,0-1.24.01-1.86.02-.62,0-1.24-.02-1.86-.02-37.69,0-73.13,14.68-99.78,41.33-26.65,26.65-41.33,62.09-41.33,99.78s14.54,72.79,40.95,99.39l28.01-29.39c-17.59-18.12-28.43-42.82-28.43-70,0-55.46,45.12-100.58,100.58-100.58.62,0,1.24.01,1.86.02h0s0,0,0,0h0c.62-.01,1.24-.02,1.86-.02,55.46,0,100.58,45.12,100.58,100.58,0,27.19-10.85,51.88-28.43,70l28.01,29.39c26.41-26.61,40.95-61.88,40.95-99.39s-14.68-73.13-41.33-99.78Z"/>
+</svg>

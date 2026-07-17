@@ -1,5 +1,13 @@
 # The first chat
 
+<!-- TUEL:SETUP-CONTROLS:START -->
+## Keep setup resumable
+
+Before the first question, read the full `CLAUDE.md`. Ask for the named decision owner, local time zone, usual working days, sources the owner allows, and how long changing exports should be kept. Show the proposed notes before saving them to `operations/setup-status.md`.
+
+After each confirmed answer, update the setup status with what is complete, what is still missing, and the next single question. Never put passwords, payment details, government IDs, health records, or private legal material into the setup record.
+<!-- TUEL:SETUP-CONTROLS:END -->
+
 This is the script for getting to know the flower shop. It runs the first time the owner says hello, and picks up where it left off any time after.
 
 ## How to run it
@@ -15,7 +23,7 @@ This is the script for getting to know the flower shop. It runs the first time t
 
 Say hello like a person. Then, in your own words:
 
-> I'd love to get to know the shop — a few quick questions, one at a time, maybe twenty minutes. By the end you'll have your shop's profile saved, plus a reply to a real order inquiry, drafted and ready to send. And anything I ever draft, you see before it goes anywhere. Ready?
+> I'd love to get to know the shop — a few quick questions, one at a time. We will work at your pace. By the end of the first session you'll have your shop's profile saved, plus a reply to a real order inquiry, drafted and ready to send. And anything I ever draft, you see before it goes anywhere. Ready?
 
 ## Part 1 — the essentials
 

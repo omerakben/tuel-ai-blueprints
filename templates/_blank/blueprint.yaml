@@ -2,7 +2,12 @@
 # rules in standard/. Claude Desktop does not read it.
 name: "{{NAME}}"
 slug: _blank # TODO: after copying, set this to the blueprint folder name, e.g. salon
-version: "0.1.0"
+version: "1.0.0"
+standard_version: "1.0.0"
+policy_version: "1.0.0"
+data_layout_version: "1.0.0"
+operating_profile: draft-only-v1
+platform_claims_checked_on: "2026-07-17"
 business_type: "{{BUSINESS_TYPE}}"
 summary: "A ready-to-open business folder that helps you run {{NAME}} day to day — Claude drafts, you approve."
 language: en
@@ -10,13 +15,24 @@ skills:
   - plan-the-week
   - draft-a-promo
   - close-the-day
+  - review-the-work
 schedules:
   - morning-brief
   - end-of-day
+  - weekly-operations-review
 workflows:
   - weekly-review
+  - verify-a-draft
+  - review-business-memory
+  - handle-an-incident
 templates:
   - weekly-report
+  - operations-board
+  - work-receipt
+  - decision-record
+  - memory-proposal
+  - incident-record
+  - weekly-operations-review
 memory_files:
   - profile
   - services
@@ -25,3 +41,13 @@ memory_files:
   - suppliers
   - policies
   - brand
+roles:
+  - operator
+  - reality-checker
+protected_paths:
+  - business/
+  - assets/
+  - reports/
+  - operations/
+  - inbox/
+connectors: []
