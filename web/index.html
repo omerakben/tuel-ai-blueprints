@@ -88,9 +88,10 @@ header{padding:0 0 8px}
 .receipt li{display:flex;gap:10px;padding:6px 0}
 .receipt li b{color:var(--awning);font-weight:700}
 .receipt .total{
-  border-top:1px dashed var(--ticket-line);padding:10px 18px 16px;
+  border-top:1px dashed var(--ticket-line);padding:10px 18px 6px;
   display:flex;justify-content:space-between;font-weight:700;
 }
+.receipt .fineprint{padding:0 18px 16px;font-size:11px;color:var(--muted);line-height:1.45}
 
 /* finder */
 .finder{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:6px 0 26px;position:sticky;top:0;background:var(--paper);z-index:5;border-bottom:1px solid var(--line)}
@@ -193,17 +194,18 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 26px}
   <section class="hero">
     <div>
       <h2>Download your business. <em>Open it.</em> Let Claude run it.</h2>
-      <p class="sub">Free folders that turn Claude into your shop's extra pair of hands — the posts, the reminders, the estimates, the end-of-day count. No tech skills needed. If you can open a folder, you're qualified.</p>
-      <p class="promise">Claude drafts. You decide. Nothing is ever sent, posted, or paid without your okay.</p>
+      <p class="sub">Free folders that turn Claude into your shop's extra pair of hands — the posts, the reminders, the estimates, the end-of-day summary. No coding needed. If you can open a folder, you're qualified.</p>
+      <p class="promise">Claude drafts. You review. Every send, post, and payment is yours to make.</p>
     </div>
     <aside class="receipt" aria-label="How it works, three steps">
       <div class="head">HOW IT WORKS</div>
       <ol>
         <li><b>1</b><span>Find your business below and download its folder</span></li>
         <li><b>2</b><span>Open Claude Desktop and add the folder to a new project</span></li>
-        <li><b>3</b><span>Paste the hello prompt — your first win lands in about 20 minutes</span></li>
+        <li><b>3</b><span>Paste the hello prompt — aim for your first useful draft in about 20 minutes</span></li>
       </ol>
-      <div class="total"><span>YOUR COST</span><span>$0.00</span></div>
+      <div class="total"><span>FOLDER PRICE</span><span>$0.00</span></div>
+      <div class="fineprint">Claude Desktop and a paid Claude plan are sold separately by Anthropic — not included.</div>
     </aside>
   </section>
 
@@ -219,20 +221,20 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:8px 26px}
   </section>
 
   <section id="grid" class="grid" aria-live="polite"></section>
-  <p id="none" class="none">No match for that — but the folders are easy to reshape. <b>Grab the closest one</b> and tell Claude what your business really is.</p>
+  <p id="none" class="none">No match for that yet. <b>Pick a genuinely similar business</b> and keep its safety rules — Claude can adjust the details with you.</p>
 </main>
 
 <footer>
   <div class="wrap">
-    <span>Every folder is plain files you own, on your computer.</span>
+    <span>Each folder is plain files you can read, edit, and keep — free under the MIT license.</span>
     <span><a href="https://github.com/omerakben/tuel-ai-blueprints">Source &amp; contributions on GitHub</a></span>
-    <span>Not affiliated with Anthropic. Operational help, not professional advice.</span>
+    <span>Not affiliated with Anthropic; using the folders with Claude follows Anthropic's terms. Operational help, not professional advice.</span>
   </div>
 </footer>
 
 <script>
 const CATALOG = /*__CATALOG__*/[];
-const PROMPT = "Please read START-HERE.md in this folder, then help me set up my business here. Ask me one question at a time — no tech talk. Show me every draft and every change before you save or send anything. Let's end today with my first win saved in the reports folder.";
+const PROMPT = "Please read START-HERE.md in this folder, then help me set up my business here. Ask me one question at a time — no tech talk. Show me every draft and every change before you save it. Never send, post, book, order, or pay anything — I handle those myself. Let's end today with my first win saved in the reports folder.";
 
 const grid = document.getElementById('grid');
 const none = document.getElementById('none');
@@ -253,7 +255,7 @@ function card(b, i){
     <div class="body">
       <div class="sign" aria-hidden="true">${esc(b.emoji)}</div>
       <h3>${esc(b.name)}</h3>
-      <p class="for">for ${esc(b.business_type)}s</p>
+      <p class="for">for ${esc(b.business_type)} owners</p>
       <p class="sum">${esc(b.summary)}</p>
       <p class="win">${esc(b.first_win)}</p>
     </div>
@@ -263,7 +265,7 @@ function card(b, i){
       <a class="dl" href="downloads/${b.slug}.zip" download>Download the ${esc(b.name.toLowerCase())} folder (.zip)</a>
       <div class="row"><span>Your hello prompt</span><button class="copy" data-copy="prompt">Copy</button></div>
       <div class="prompt">${esc(PROMPT)}</div>
-      <p class="builders">Builders: npx degit omerakben/tuel-ai-blueprints/blueprints/${b.slug} ${b.slug}</p>
+      <p class="builders">Developer install: npx degit omerakben/tuel-ai-blueprints/blueprints/${b.slug} ${b.slug}</p>
     </div>`;
   const btn = el.querySelector('.open');
   btn.addEventListener('click', () => {

@@ -2,6 +2,8 @@
 
 **Download your business. Open it. Let Claude run it.**
 
+**→ Find your business at [omerakben.github.io/tuel-ai-blueprints](https://omerakben.github.io/tuel-ai-blueprints/)** — every folder has a download button and a ready-to-paste hello prompt.
+
 A blueprint is a ready-to-operate folder for one kind of small business. Open it in Claude Desktop and Claude becomes a capable operator for that business — drafting the marketing, closing out the day, reminding clients to rebook, watching the stock — and checking with you before anything real happens.
 
 ## How it works
@@ -39,9 +41,9 @@ Everything is draft-first: nothing is sent, posted, paid, or promised without yo
 
 ## Get one folder
 
-You only need your business, not this whole repository. Download the repository ZIP, keep just the folder for your business, and open that folder in Claude Desktop — that's the whole install.
+The easy way: the [catalog site](https://omerakben.github.io/tuel-ai-blueprints/) has a download button per business — you get just your folder as a ZIP, nothing else.
 
-Builders can grab a single folder from the command line once this repository is published on GitHub:
+Builders can grab a single folder from the command line:
 
 ```bash
 npx degit omerakben/tuel-ai-blueprints/blueprints/salon salon
